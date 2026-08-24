@@ -23,7 +23,7 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | SIP | Title | Layer | Type | Status |
 |---|---|---|---|---|
 | [1](sip-0001.md) | The SIP process | Process | Process | Active |
-| [2](sip-0002.md) | Peer identity at the application layer | Transport | Standards Track | Draft |
+| [2](sip-0002.md) | Peer identity at the application layer | Transport | Standards Track | Active |
 | [3](sip-0003.md) | Identity binding | Exchange | Standards Track | Withdrawn |
 | [4](sip-0004.md) | Liveness beacon | Exchange | Standards Track | Draft |
 | [5](sip-0005.md) | Store-and-forward mailbox | Exchange | Standards Track | Draft |
@@ -34,17 +34,21 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 
 ## Where this is going
 
-SIP-2 and SIP-4 are the first thing to be built:
+SIP-2 shipped (squic v0.14.0, sqssh v0.2.10): the transport now hands the
+application the X25519 key it verified on the Initial, and an application with
+a known set of callers names them by matching that key against the identities
+it already holds. That closed the sqsshd impersonation hole it was written for.
 
 ```
-SIP-2  the handshake already proves who is calling — deliver the
-       Ed25519 key to the application
+SIP-2  the handshake already proved the caller's transport key — expose it,
+       and let the application match it against the keys it knows
   └─ SIP-4  an identity can then beat with no signature at all
 ```
 
-SIP-3 used to sit between them, turning the X25519 key the transport
-verified into a name. SIP-2 now delivers the name directly, so SIP-3 is
-withdrawn.
+SIP-3 used to sit between them, turning the X25519 key into an Ed25519 name via
+a claim exchange. A consumer with a closed set does not need it — it matches
+forward — so SIP-3 is withdrawn. An open exchange with no set to match against
+would; that is noted in SIP-2's rationale for whoever builds it.
 
 That is the argument for **sqex**, the sQUIC exchange: things an identity can
 do purely by virtue of having connected. SIP-5 and SIP-6 are further uses of
