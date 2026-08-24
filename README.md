@@ -24,7 +24,7 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 |---|---|---|---|---|
 | [1](sip-0001.md) | The SIP process | Process | Process | Active |
 | [2](sip-0002.md) | Peer identity at the application layer | Transport | Standards Track | Draft |
-| [3](sip-0003.md) | Identity binding | Exchange | Standards Track | Draft |
+| [3](sip-0003.md) | Identity binding | Exchange | Standards Track | Withdrawn |
 | [4](sip-0004.md) | Liveness beacon | Exchange | Standards Track | Draft |
 | [5](sip-0005.md) | Store-and-forward mailbox | Exchange | Standards Track | Draft |
 | [6](sip-0006.md) | Rendezvous and introduction | Exchange | Standards Track | Draft |
@@ -34,13 +34,17 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 
 ## Where this is going
 
-SIP-2 through SIP-4 are one chain, and the first thing to be built:
+SIP-2 and SIP-4 are the first thing to be built:
 
 ```
-SIP-2  the transport already knows who is calling — expose it
-  └─ SIP-3  bind that X25519 key to an Ed25519 identity, once, with a signature
-       └─ SIP-4  thereafter an identity can beat with no signature at all
+SIP-2  the handshake already proves who is calling — deliver the
+       Ed25519 key to the application
+  └─ SIP-4  an identity can then beat with no signature at all
 ```
+
+SIP-3 used to sit between them, turning the X25519 key the transport
+verified into a name. SIP-2 now delivers the name directly, so SIP-3 is
+withdrawn.
 
 That is the argument for **sqex**, the sQUIC exchange: things an identity can
 do purely by virtue of having connected. SIP-5 and SIP-6 are further uses of
