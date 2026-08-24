@@ -1,0 +1,17 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # A documents repo cannot be tested, but it can drift: a SIP added
+      # without an index row, a preamble missing a field, a cross-reference to
+      # a file that was renamed. These are the failures that actually happen.
+      - name: Check SIPs
+        run: ./check.sh
