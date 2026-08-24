@@ -23,7 +23,7 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | SIP | Title | Layer | Type | Status |
 |---|---|---|---|---|
 | [1](sip-0001.md) | The SIP process | Process | Process | Active |
-| [2](sip-0002.md) | Transport peer identity | Transport | Standards Track | Draft |
+| [2](sip-0002.md) | Peer identity at the application layer | Transport | Standards Track | Draft |
 | [3](sip-0003.md) | Identity binding | Exchange | Standards Track | Draft |
 | [4](sip-0004.md) | Liveness beacon | Exchange | Standards Track | Draft |
 | [5](sip-0005.md) | Store-and-forward mailbox | Exchange | Standards Track | Draft |
