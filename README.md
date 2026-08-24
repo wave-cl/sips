@@ -24,14 +24,13 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 |---|---|---|---|---|
 | [1](sip-0001.md) | The SIP process | Process | Process | Active |
 | [2](sip-0002.md) | Peer identity at the application layer | Transport | Standards Track | Active |
-| [3](sip-0003.md) | Identity binding | Exchange | Standards Track | Withdrawn |
+| [3](sip-0003.md) | Transport-carried Ed25519 identity | Transport | Standards Track | Draft |
 | [4](sip-0004.md) | Liveness beacon | Exchange | Standards Track | Draft |
 | [5](sip-0005.md) | Store-and-forward mailbox | Exchange | Standards Track | Draft |
 | [6](sip-0006.md) | Rendezvous and introduction | Exchange | Standards Track | Draft |
 | [7](sip-0007.md) | Capability advertisement | Exchange | Standards Track | Draft |
 | [8](sip-0008.md) | Vouching and attestation | Exchange | Standards Track | Draft |
 | [9](sip-0009.md) | Public key resolution | Exchange | Standards Track | Draft |
-| [10](sip-0010.md) | Transport-carried Ed25519 identity | Transport | Standards Track | Draft |
 
 ## Where this is going
 
@@ -46,14 +45,15 @@ SIP-2  the handshake already proved the caller's transport key — expose it,
   └─ SIP-4  an identity can then beat with no signature at all
 ```
 
-SIP-3 used to sit between them, turning the X25519 key into an Ed25519 name via
-a claim exchange. A consumer with a closed set does not need it — it matches
-forward — so SIP-3 is withdrawn. An open exchange with no set to match against
-does need the name, and SIP-10 supplies it: the client carries its Ed25519 key
-in the same Initial envelope, bound by MAC1 and checked by derivation, so the
-server reports the identity at accept without prior knowledge of the caller. It
-is optional per connection, so closed-set servers like sqssh keep the
-wire-invisible SIP-2 path and pay nothing.
+A consumer with a closed set of callers names them with SIP-2 alone, matching
+forward. An open exchange with no set to match against needs the name spelled
+out, and SIP-3 supplies it: the client carries its Ed25519 key in the same
+Initial envelope, bound by MAC1 and checked by derivation, so the server reports
+the identity at accept without prior knowledge of the caller. It is optional per
+connection, so closed-set servers like sqssh keep the wire-invisible SIP-2 path
+and pay nothing. (An earlier SIP-3 proposed a signed claim exchange for the same
+end; it was removed in favour of this envelope-carried form before either was
+adopted.)
 
 That is the argument for **sqex**, the sQUIC exchange: things an identity can
 do purely by virtue of having connected. SIP-5 and SIP-6 are further uses of
