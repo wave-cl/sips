@@ -31,6 +31,7 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [7](sip-0007.md) | Capability advertisement | Exchange | Standards Track | Draft |
 | [8](sip-0008.md) | Vouching and attestation | Exchange | Standards Track | Draft |
 | [9](sip-0009.md) | Public key resolution | Exchange | Standards Track | Draft |
+| [10](sip-0010.md) | Transport-carried Ed25519 identity | Transport | Standards Track | Draft |
 
 ## Where this is going
 
@@ -48,7 +49,11 @@ SIP-2  the handshake already proved the caller's transport key — expose it,
 SIP-3 used to sit between them, turning the X25519 key into an Ed25519 name via
 a claim exchange. A consumer with a closed set does not need it — it matches
 forward — so SIP-3 is withdrawn. An open exchange with no set to match against
-would; that is noted in SIP-2's rationale for whoever builds it.
+does need the name, and SIP-10 supplies it: the client carries its Ed25519 key
+in the same Initial envelope, bound by MAC1 and checked by derivation, so the
+server reports the identity at accept without prior knowledge of the caller. It
+is optional per connection, so closed-set servers like sqssh keep the
+wire-invisible SIP-2 path and pay nothing.
 
 That is the argument for **sqex**, the sQUIC exchange: things an identity can
 do purely by virtue of having connected. SIP-5 and SIP-6 are further uses of
