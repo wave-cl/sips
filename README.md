@@ -30,6 +30,7 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [6](sip-0006.md) | Rendezvous and introduction | Exchange | Standards Track | Draft |
 | [7](sip-0007.md) | Capability advertisement | Exchange | Standards Track | Draft |
 | [8](sip-0008.md) | Vouching and attestation | Exchange | Standards Track | Draft |
+| [9](sip-0009.md) | Public key resolution | Exchange | Standards Track | Draft |
 
 ## Where this is going
 
@@ -45,9 +46,15 @@ That is the argument for **sqex**, the sQUIC exchange: things an identity can
 do purely by virtue of having connected. SIP-5 and SIP-6 are further uses of
 the same property. SIP-8 is the exception that needs signatures, and says why.
 
-SIP-7 argues against itself and recommends its own withdrawal — see the
-boundary problem in that document. It is kept because the reasoning is the
-useful part.
+SIP-9 moves key-to-endpoint resolution into the exchange, unsigned and
+transport-authenticated. It trades sqns's self-authenticating records for one
+service instead of two, and is explicit that the trust boundary is availability
+rather than authenticity — a consumer still pins the key it asked for, so a
+dishonest exchange can deny but cannot impersonate.
+
+SIP-7 argued against itself on the grounds that capability belonged in an sqns
+record. SIP-9 resolves that objection by moving resolution itself, and SIP-7 is
+revised accordingly.
 
 ## Status of the whole thing
 
