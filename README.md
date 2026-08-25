@@ -26,7 +26,7 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [2](sip-0002.md) | Peer identity at the application layer | Transport | Standards Track | Active |
 | [3](sip-0003.md) | Transport-carried Ed25519 identity | Transport | Standards Track | Active |
 | [4](sip-0004.md) | Liveness beacon | Exchange | Standards Track | Active |
-| [5](sip-0005.md) | Store-and-forward mailbox | Exchange | Standards Track | Draft |
+| [5](sip-0005.md) | Store-and-forward mailbox | Exchange | Standards Track | Active |
 | [6](sip-0006.md) | Rendezvous and introduction | Exchange | Standards Track | Draft |
 | [7](sip-0007.md) | Capability advertisement | Exchange | Standards Track | Draft |
 | [8](sip-0008.md) | Vouching and attestation | Exchange | Standards Track | Draft |
@@ -70,8 +70,10 @@ end; it was removed in favour of this envelope-carried form before either was
 adopted.)
 
 That is the argument for **sqex**, the sQUIC exchange: things an identity can
-do purely by virtue of having connected. SIP-5 and SIP-6 are further uses of
-the same property. SIP-8 is the exception that needs signatures, and says why.
+do purely by virtue of having connected. SIP-5 is the second such service — a
+mailbox where both ends are named by their connections and the payload is sealed
+so the exchange cannot read it. SIP-6 is a further use of the same property.
+SIP-8 is the exception that needs signatures, and says why.
 
 SIP-9 moves key-to-endpoint resolution into the exchange, unsigned and
 transport-authenticated. It trades sqns's self-authenticating records for one
@@ -97,10 +99,9 @@ grant — composition, not new wire.
 
 **Active, with reference implementations:** SIP-1 (the process itself), SIP-2
 and SIP-3 (both shipped in squic, Rust and Go, with a cross-implementation test
-in CI), SIP-4 (the liveness beacon — sqex's first exchange service, and the
-first thing built *on* SIP-3), SIP-10 (sqnr + sqex), and SIP-11 (documenting a
-pattern those two compose).
+in CI), SIP-4 (the liveness beacon) and SIP-5 (the mailbox) — the exchange's
+first two services, both built on SIP-3 — SIP-10 (sqnr + sqex), and SIP-11
+(documenting a pattern those two compose).
 
-**Draft, unimplemented:** SIP-5 through SIP-9 — the rest of the exchange
-services. Those wire formats are not stable and should not be built against
-yet.
+**Draft, unimplemented:** SIP-6 through SIP-9. Those wire formats are not stable
+and should not be built against yet.
