@@ -32,6 +32,7 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [8](sip-0008.md) | Vouching and attestation | Exchange | Standards Track | Draft |
 | [9](sip-0009.md) | Public key resolution | Exchange | Standards Track | Draft |
 | [10](sip-0010.md) | Signed transaction envelope | Application | Standards Track | Active |
+| [11](sip-0011.md) | Delegating a transport identity | Application | Informational | Active |
 
 ## Where this is going
 
@@ -74,8 +75,11 @@ SIP-10 sits at a different layer from the rest: not the transport or the
 exchange, but how an operator authorises a *service* administratively. It is the
 signed-transaction envelope `sqnr` produces — an opaque, batched, human-labelled
 signature that a hardware key can make and that carries its own authority
-independent of the connection. It is **Active**, the one proposal here with a shipped
-reference implementation (sqnr + sqex).
+independent of the connection. It is **Active**, the one Standards Track proposal here with a shipped
+reference implementation (sqnr + sqex). SIP-11 is Informational: it documents
+how a hardware-backed identity, which cannot itself be a transport key,
+**delegates** a software key onto a service's whitelist by signing a SIP-10
+grant — composition, not new wire.
 
 ## Status of the whole thing
 
