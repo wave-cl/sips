@@ -33,6 +33,7 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [9](sip-0009.md) | Public key resolution | Exchange | Standards Track | Draft |
 | [10](sip-0010.md) | Signed transaction envelope | Application | Standards Track | Active |
 | [11](sip-0011.md) | Delegating a transport identity | Application | Informational | Active |
+| [12](sip-0012.md) | Relayed session | Exchange | Standards Track | Active |
 
 ## Where this is going
 
@@ -72,8 +73,13 @@ adopted.)
 That is the argument for **sqex**, the sQUIC exchange: things an identity can
 do purely by virtue of having connected. SIP-5 is the second such service — a
 mailbox where both ends are named by their connections and the payload is sealed
-so the exchange cannot read it. SIP-6 is a further use of the same property.
-SIP-8 is the exception that needs signatures, and says why.
+so the exchange cannot read it. SIP-12 is the third: when two identities cannot
+reach each other at all, the exchange carries the session between them, with a
+key agreement it cannot complete. SIP-6 — introducing peers so they connect
+*directly* — remains unbuilt, because hole punching needs a transport capability
+sQUIC does not have and a NAT type that cannot be assumed; SIP-12 is the fallback
+it predicted, and the two are complementary. SIP-8 is the exception that needs
+signatures, and says why.
 
 SIP-9 moves key-to-endpoint resolution into the exchange, unsigned and
 transport-authenticated. It trades sqns's self-authenticating records for one
@@ -99,8 +105,8 @@ grant — composition, not new wire.
 
 **Active, with reference implementations:** SIP-1 (the process itself), SIP-2
 and SIP-3 (both shipped in squic, Rust and Go, with a cross-implementation test
-in CI), SIP-4 (the liveness beacon) and SIP-5 (the mailbox) — the exchange's
-first two services, both built on SIP-3 — SIP-10 (sqnr + sqex), and SIP-11
+in CI), SIP-4 (beacon), SIP-5 (mailbox) and SIP-12 (relayed session) — the
+exchange's three services, all built on SIP-3 — SIP-10 (sqnr + sqex), and SIP-11
 (documenting a pattern those two compose).
 
 **Draft, unimplemented:** SIP-6 through SIP-9. Those wire formats are not stable
