@@ -31,6 +31,7 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [7](sip-0007.md) | Capability advertisement | Exchange | Standards Track | Draft |
 | [8](sip-0008.md) | Vouching and attestation | Exchange | Standards Track | Draft |
 | [9](sip-0009.md) | Public key resolution | Exchange | Standards Track | Draft |
+| [10](sip-0010.md) | Signed transaction envelope | Application | Standards Track | Active |
 
 ## Where this is going
 
@@ -69,8 +70,16 @@ SIP-7 argued against itself on the grounds that capability belonged in an sqns
 record. SIP-9 resolves that objection by moving resolution itself, and SIP-7 is
 revised accordingly.
 
+SIP-10 sits at a different layer from the rest: not the transport or the
+exchange, but how an operator authorises a *service* administratively. It is the
+signed-transaction envelope `sqnr` produces — an opaque, batched, human-labelled
+signature that a hardware key can make and that carries its own authority
+independent of the connection. It is **Active**, the one proposal here with a shipped
+reference implementation (sqnr + sqex).
+
 ## Status of the whole thing
 
-Everything except SIP-1 is **Draft**, and no reference implementation exists
-for any of it. Wire formats here are not stable and should not be built
+SIP-1 (Process) and SIP-10 are **Active**; SIP-2 is Active and shipped in the
+transport. Everything else is **Draft** with no reference implementation — the
+transport and exchange wire formats are not stable and should not be built
 against yet.
