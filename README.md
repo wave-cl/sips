@@ -25,7 +25,7 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [1](sip-0001.md) | The SIP process | Process | Process | Active |
 | [2](sip-0002.md) | Peer identity at the application layer | Transport | Standards Track | Active |
 | [3](sip-0003.md) | Transport-carried Ed25519 identity | Transport | Standards Track | Active |
-| [4](sip-0004.md) | Liveness beacon | Exchange | Standards Track | Draft |
+| [4](sip-0004.md) | Liveness beacon | Exchange | Standards Track | Active |
 | [5](sip-0005.md) | Store-and-forward mailbox | Exchange | Standards Track | Draft |
 | [6](sip-0006.md) | Rendezvous and introduction | Exchange | Standards Track | Draft |
 | [7](sip-0007.md) | Capability advertisement | Exchange | Standards Track | Draft |
@@ -50,8 +50,14 @@ they have a reason to follow.
 ```
 SIP-2  the handshake already proved the caller's transport key — expose it,
        and let the application match it against the keys it knows
-  └─ SIP-4  an identity can then beat with no signature at all
+  └─ SIP-3  let the caller also state its Ed25519 name, so a server can
+            identify a caller it never registered
+       └─ SIP-4  an identity can then beat with no signature at all
 ```
+
+That chain is now built end to end: a service connects, sQUIC proves its key and
+carries its name, and the exchange records that it is alive — no signature
+anywhere in the path.
 
 A consumer with a closed set of callers names them with SIP-2 alone, matching
 forward. An open exchange with no set to match against needs the name spelled
@@ -91,9 +97,10 @@ grant — composition, not new wire.
 
 **Active, with reference implementations:** SIP-1 (the process itself), SIP-2
 and SIP-3 (both shipped in squic, Rust and Go, with a cross-implementation test
-in CI), SIP-10 (sqnr + sqex), and SIP-11 (documenting a pattern those two
-compose).
+in CI), SIP-4 (the liveness beacon — sqex's first exchange service, and the
+first thing built *on* SIP-3), SIP-10 (sqnr + sqex), and SIP-11 (documenting a
+pattern those two compose).
 
-**Draft, unimplemented:** SIP-4 through SIP-9 — the exchange services. Those
-wire formats are not stable and should not be built against yet. SIP-4 is next:
-its `Requires: 3` is now satisfied.
+**Draft, unimplemented:** SIP-5 through SIP-9 — the rest of the exchange
+services. Those wire formats are not stable and should not be built against
+yet.
