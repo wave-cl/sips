@@ -24,7 +24,7 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 |---|---|---|---|---|
 | [1](sip-0001.md) | The SIP process | Process | Process | Active |
 | [2](sip-0002.md) | Peer identity at the application layer | Transport | Standards Track | Active |
-| [3](sip-0003.md) | Transport-carried Ed25519 identity | Transport | Standards Track | Draft |
+| [3](sip-0003.md) | Transport-carried Ed25519 identity | Transport | Standards Track | Active |
 | [4](sip-0004.md) | Liveness beacon | Exchange | Standards Track | Draft |
 | [5](sip-0005.md) | Store-and-forward mailbox | Exchange | Standards Track | Draft |
 | [6](sip-0006.md) | Rendezvous and introduction | Exchange | Standards Track | Draft |
@@ -36,10 +36,16 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 
 ## Where this is going
 
-SIP-2 shipped (squic v0.14.0, sqssh v0.2.10): the transport now hands the
-application the X25519 key it verified on the Initial, and an application with
-a known set of callers names them by matching that key against the identities
-it already holds. That closed the sqsshd impersonation hole it was written for.
+SIP-2 shipped (squic-rust v0.14.0, squic-go v0.59.7, sqssh v0.2.10): the
+transport hands the application the X25519 key it verified on the Initial, and
+an application with a known set of callers names them by matching that key
+against the identities it already holds. That closed the sqsshd impersonation
+hole it was written for.
+
+SIP-3 has now shipped too (squic-rust v0.15.0, squic-go v0.60.0) — a breaking
+flag-day that grew the Initial trailer to 108 bytes. Consumers move at their own
+pace: sqex and sqnr are across; sqssh and sqns remain on the earlier wire until
+they have a reason to follow.
 
 ```
 SIP-2  the handshake already proved the caller's transport key — expose it,
@@ -51,9 +57,9 @@ A consumer with a closed set of callers names them with SIP-2 alone, matching
 forward. An open exchange with no set to match against needs the name spelled
 out, and SIP-3 supplies it: the client carries its Ed25519 key in the same
 Initial envelope, bound by MAC1 and checked by derivation, so the server reports
-the identity at accept without prior knowledge of the caller. It is optional per
-connection, so closed-set servers like sqssh keep the wire-invisible SIP-2 path
-and pay nothing. (An earlier SIP-3 proposed a signed claim exchange for the same
+the identity at accept without prior knowledge of the caller. Advertising is
+optional per connection, so closed-set servers like sqssh keep the wire-invisible
+SIP-2 path and pay nothing. (An earlier SIP-3 proposed a signed claim exchange for the same
 end; it was removed in favour of this envelope-carried form before either was
 adopted.)
 
@@ -83,7 +89,11 @@ grant — composition, not new wire.
 
 ## Status of the whole thing
 
-SIP-1 (Process) and SIP-10 are **Active**; SIP-2 is Active and shipped in the
-transport. Everything else is **Draft** with no reference implementation — the
-transport and exchange wire formats are not stable and should not be built
-against yet.
+**Active, with reference implementations:** SIP-1 (the process itself), SIP-2
+and SIP-3 (both shipped in squic, Rust and Go, with a cross-implementation test
+in CI), SIP-10 (sqnr + sqex), and SIP-11 (documenting a pattern those two
+compose).
+
+**Draft, unimplemented:** SIP-4 through SIP-9 — the exchange services. Those
+wire formats are not stable and should not be built against yet. SIP-4 is next:
+its `Requires: 3` is now satisfied.
