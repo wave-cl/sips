@@ -34,6 +34,7 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [10](sip-0010.md) | Signed transaction envelope | Application | Standards Track | Active |
 | [11](sip-0011.md) | Delegating a transport identity | Application | Informational | Active |
 | [12](sip-0012.md) | Relayed session | Exchange | Standards Track | Active |
+| [13](sip-0013.md) | Rooms | Exchange | Standards Track | Active |
 
 ## Where this is going
 
@@ -101,12 +102,22 @@ how a hardware-backed identity, which cannot itself be a transport key,
 **delegates** a software key onto a service's whitelist by signing a SIP-10
 grant — composition, not new wire.
 
+SIP-13 is the exchange's fourth service and the cheapest of them, because it
+adds no cryptography at all. A room is a roster: identities that present the
+same secret learn who else is present, and then talk in pairs over SIP-12. The
+exchange routes on a hash of the secret rather than the secret, so it cannot
+join a room it carries; members carry a proof of the secret that the exchange
+can relay but neither verify nor forge, so it cannot insert a listener either.
+What it buys is multi-party conversation for the price of a hash — and what it
+costs is stated plainly in its security section: a room secret is a bearer
+capability with no revocation.
+
 ## Status of the whole thing
 
 **Active, with reference implementations:** SIP-1 (the process itself), SIP-2
 and SIP-3 (both shipped in squic, Rust and Go, with a cross-implementation test
-in CI), SIP-4 (beacon), SIP-5 (mailbox) and SIP-12 (relayed session) — the
-exchange's three services, all built on SIP-3 — SIP-10 (sqnr + sqex), and SIP-11
+in CI), SIP-4 (beacon), SIP-5 (mailbox), SIP-12 (relayed session) and SIP-13 (rooms) —
+the exchange's four services, all built on SIP-3 — SIP-10 (sqnr + sqex), and SIP-11
 (documenting a pattern those two compose).
 
 **Draft, unimplemented:** SIP-6 through SIP-9. Those wire formats are not stable
