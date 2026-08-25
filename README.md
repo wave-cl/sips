@@ -35,6 +35,7 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [11](sip-0011.md) | Delegating a transport identity | Application | Informational | Active |
 | [12](sip-0012.md) | Relayed session | Exchange | Standards Track | Active |
 | [13](sip-0013.md) | Rooms | Exchange | Standards Track | Active |
+| [14](sip-0014.md) | Discontinuous voice framing | Application | Standards Track | Active |
 
 ## Where this is going
 
@@ -117,8 +118,8 @@ capability with no revocation.
 **Active, with reference implementations:** SIP-1 (the process itself), SIP-2
 and SIP-3 (both shipped in squic, Rust and Go, with a cross-implementation test
 in CI), SIP-4 (beacon), SIP-5 (mailbox), SIP-12 (relayed session) and SIP-13 (rooms) —
-the exchange's four services, all built on SIP-3 — SIP-10 (sqnr + sqex), and SIP-11
-(documenting a pattern those two compose).
+the exchange's four services, all built on SIP-3 — SIP-10 (sqnr + sqex), SIP-11
+(documenting a pattern those two compose), and SIP-14 (voice framing).
 
 **Draft, unimplemented:** SIP-6 through SIP-9. Those wire formats are not stable
 and should not be built against yet.
