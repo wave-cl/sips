@@ -41,6 +41,9 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [17](sip-0017.md) | Channel keys | Exchange | Standards Track | Draft |
 | [18](sip-0018.md) | Attachments and blobs | Exchange | Standards Track | Draft |
 | [19](sip-0019.md) | Chat messages | Application | Standards Track | Draft |
+| [20](sip-0020.md) | Portable delegation credentials | Application | Standards Track | Draft |
+| [21](sip-0021.md) | Profiles and blocking | Exchange | Standards Track | Draft |
+| [22](sip-0022.md) | Device registry | Exchange | Standards Track | Draft |
 
 ## Where this is going
 
@@ -139,14 +142,41 @@ attachments — and it inherits SIP-15's best idea, that an unknown type is
 ignored rather than refused, which is the whole reason a later kind of message
 can be added without a flag day.
 
+**SIP-20** is the credential SIP-11 predicted and deferred until a second
+consumer needed one. It separates a *person* from a *client*: an account signs a
+portable, self-contained grant naming a device, verifiable by anyone holding the
+account key with no record of the grant. Chat needs it for a reason sharper than
+convenience — SIP-17 derives its per-sender subkey from the sender's key, so two
+clients under one identity would share a subkey, start their counters at zero
+together, and reuse a nonce, which costs ChaCha20-Poly1305 both plaintexts and
+its authentication. A device is the unit of separation because a device is the
+thing that holds a counter. **SIP-22** is the exchange side of that: it records
+which devices belong to whom, and does the one thing a portable credential
+structurally cannot, which is revoke — somebody who loses a phone recovers
+there, not in SIP-20. **SIP-21** is the smallest of the set and carries the
+largest share of its risk: a display name and an avatar, which is the first
+thing anywhere in this stack that two different people can make look alike, and
+alongside it a block list, because what a person shows to others and who may
+reach them are the same question from opposite ends.
+
 Between them they describe direct messages, public rooms anyone may join and
-private rooms by invitation. Two things in the set are worth stating plainly
-because they are trades rather than wins. Private channels buy revocation by
-giving the exchange a durable membership graph, where SIP-13's roster evaporates
+private rooms by invitation, with several devices per person. Two things in the
+set are worth stating plainly because they are trades rather than wins. Private
+channels buy revocation by giving the exchange a durable membership graph, where
+SIP-13's roster evaporates
 in thirty seconds — SIP-13 chose the other side of that and was right to, for a
 voice call. And public channels are stored in the clear, because anybody may
 join one and therefore anybody may hold any key it uses; encrypting anyway would
 produce something that looks end-to-end and is not.
+
+Two things the set names as successors rather than writing. **Calls started from
+a chat** would be signalling only — ring, accept, decline, and a missed-call
+entry — since SIP-13 and SIP-15 already carry the media, though video appears
+nowhere in SIP-15. **Push wake-up** is the harder one and is the single obstacle
+to any of this running on a phone: long-polling needs a live connection, which a
+handset cannot hold, and the alternatives lead to APNs or FCM and therefore to a
+relay that learns when each person receives a message. That is a privacy
+question deserving its own document rather than a paragraph in somebody else's.
 
 ## Status of the whole thing
 
@@ -157,6 +187,6 @@ the exchange's four services, all built on SIP-3 — SIP-10 (sqnr + sqex), SIP-1
 (documenting a pattern those two compose), and SIP-15 (voice framing, which
 replaced SIP-14).
 
-**Draft, unimplemented:** SIP-6 through SIP-9, and SIP-16 through SIP-19 — the
+**Draft, unimplemented:** SIP-6 through SIP-9, and SIP-16 through SIP-22 — the
 chat set, written as specifications first and deliberately not yet built. Those
 wire formats are not stable and should not be built against yet.
