@@ -37,6 +37,10 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [13](sip-0013.md) | Rooms | Exchange | Standards Track | Active |
 | [14](sip-0014.md) | Discontinuous voice framing | Application | Standards Track | Replaced by 15 |
 | [15](sip-0015.md) | Voice framing with comfort noise | Application | Standards Track | Active |
+| [16](sip-0016.md) | Channels | Exchange | Standards Track | Draft |
+| [17](sip-0017.md) | Channel keys | Exchange | Standards Track | Draft |
+| [18](sip-0018.md) | Attachments and blobs | Exchange | Standards Track | Draft |
+| [19](sip-0019.md) | Chat messages | Application | Standards Track | Draft |
 
 ## Where this is going
 
@@ -114,6 +118,36 @@ What it buys is multi-party conversation for the price of a hash — and what it
 costs is stated plainly in its security section: a room secret is a bearer
 capability with no revocation.
 
+SIP-16 through SIP-19 are a different kind of addition: not a fifth service but
+a stratum, four proposals that only mean anything together. **SIP-16** is a
+channel — a durable, ordered log with a membership the exchange enforces and a
+retention window it prunes against. It is the first thing here that must survive
+a restart, and it says so, because every other service in this stack argues that
+forgetting is correct and a conversation cannot make that argument. **SIP-17**
+seals it: a group key per epoch, a subkey per sender so several people can share
+a key without sharing a nonce, and rotation on removal, which is what makes
+removing somebody mean more than "cannot post". It is the group key SIP-13
+declined to build at eight people and said would need its own proposal, and the
+arithmetic that changed is storage — one ciphertext instead of N, and a member
+who joins on Tuesday can be handed a key rather than replayed a week.
+**SIP-18** is where a hundred-megabyte video goes, given that no request in this
+stack may exceed 64 KiB: chunked, sealed per chunk, named by the hash of its
+ciphertext so the exchange can verify a name it cannot read, and expired by
+attachment to a channel rather than by counting references it cannot see.
+**SIP-19** is what a message actually is — text, replies, reactions, mentions,
+attachments — and it inherits SIP-15's best idea, that an unknown type is
+ignored rather than refused, which is the whole reason a later kind of message
+can be added without a flag day.
+
+Between them they describe direct messages, public rooms anyone may join and
+private rooms by invitation. Two things in the set are worth stating plainly
+because they are trades rather than wins. Private channels buy revocation by
+giving the exchange a durable membership graph, where SIP-13's roster evaporates
+in thirty seconds — SIP-13 chose the other side of that and was right to, for a
+voice call. And public channels are stored in the clear, because anybody may
+join one and therefore anybody may hold any key it uses; encrypting anyway would
+produce something that looks end-to-end and is not.
+
 ## Status of the whole thing
 
 **Active, with reference implementations:** SIP-1 (the process itself), SIP-2
@@ -123,5 +157,6 @@ the exchange's four services, all built on SIP-3 — SIP-10 (sqnr + sqex), SIP-1
 (documenting a pattern those two compose), and SIP-15 (voice framing, which
 replaced SIP-14).
 
-**Draft, unimplemented:** SIP-6 through SIP-9. Those wire formats are not stable
-and should not be built against yet.
+**Draft, unimplemented:** SIP-6 through SIP-9, and SIP-16 through SIP-19 — the
+chat set, written as specifications first and deliberately not yet built. Those
+wire formats are not stable and should not be built against yet.
