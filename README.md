@@ -44,6 +44,7 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [20](sip-0020.md) | Portable delegation credentials | Application | Standards Track | Draft |
 | [21](sip-0021.md) | Profiles and blocking | Exchange | Standards Track | Draft |
 | [22](sip-0022.md) | Device registry | Exchange | Standards Track | Draft |
+| [23](sip-0023.md) | Device prekeys | Exchange | Standards Track | Draft |
 
 ## Where this is going
 
@@ -169,6 +170,19 @@ voice call. And public channels are stored in the clear, because anybody may
 join one and therefore anybody may hold any key it uses; encrypting anyway would
 produce something that looks end-to-end and is not.
 
+**SIP-23** is the one that came from a question rather than a comparison: are
+chats forward secret? They were not. SIP-17 sealed each channel key to the
+recipient's long-term identity, so envelopes sitting at the exchange were a pile
+of ciphertext that became an entire history the moment any one device's identity
+key turned up — harvest now, decrypt later, with rotation making the pile larger
+rather than smaller. SIP-23 is X3DH's remedy: single-use keys published in
+advance, served once, and destroyed on use, so the envelope has a fresh key at
+both ends. It is careful about what it does not buy. A device that can show you
+last month's conversation is holding last month's keys, so taking the device
+still takes them; forward secrecy of *history* is not available to a design that
+keeps history, and what is defended is the exchange's store rather than the
+reader's disk.
+
 Two things the set names as successors rather than writing. **Calls started from
 a chat** would be signalling only — ring, accept, decline, and a missed-call
 entry — since SIP-13 and SIP-15 already carry the media, though video appears
@@ -187,6 +201,6 @@ the exchange's four services, all built on SIP-3 — SIP-10 (sqnr + sqex), SIP-1
 (documenting a pattern those two compose), and SIP-15 (voice framing, which
 replaced SIP-14).
 
-**Draft, unimplemented:** SIP-6 through SIP-9, and SIP-16 through SIP-22 — the
+**Draft, unimplemented:** SIP-6 through SIP-9, and SIP-16 through SIP-23 — the
 chat set, written as specifications first and deliberately not yet built. Those
 wire formats are not stable and should not be built against yet.
