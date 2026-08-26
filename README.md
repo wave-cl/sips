@@ -107,8 +107,9 @@ SIP-10 sits at a different layer from the rest: not the transport or the
 exchange, but how an operator authorises a *service* administratively. It is the
 signed-transaction envelope `sqnr` produces — an opaque, batched, human-labelled
 signature that a hardware key can make and that carries its own authority
-independent of the connection. It is **Active**, the one Standards Track proposal here with a shipped
-reference implementation (sqnr + sqex). SIP-11 is Informational: it documents
+independent of the connection. It was the first Standards Track proposal here
+to reach **Active** with a shipped reference implementation (sqnr + sqex); most
+of the set has followed. SIP-11 is Informational: it documents
 how a hardware-backed identity, which cannot itself be a transport key,
 **delegates** a software key onto a service's whitelist by signing a SIP-10
 grant — composition, not new wire.
@@ -216,7 +217,8 @@ and SIP-3 (both shipped in squic, Rust and Go, with a cross-implementation test
 in CI), SIP-4 (beacon), SIP-5 (mailbox), SIP-12 (relayed session) and SIP-13 (rooms) —
 the exchange's four services, all built on SIP-3 — SIP-10 (sqnr + sqex), SIP-11
 (documenting a pattern those two compose), SIP-15 (voice framing, which replaced
-SIP-14), and SIP-16 through SIP-24 — the chat set, built in sqex v0.9.0.
+SIP-14), and SIP-16 through SIP-24 — the chat set, built across the sqex 0.9
+and 0.10 lines.
 
 The chat set went Active together, and had to. They are nine documents
 describing one thing: a channel that cannot be read without SIP-17's keys, which
@@ -227,3 +229,35 @@ documents it depends on were still open to change.
 
 **Draft, unimplemented:** SIP-6 through SIP-9. Those wire formats are not stable
 and should not be built against yet.
+
+## What writing them first did and did not catch
+
+The case at the top of this file is for writing the design down before building
+it, and the chat set is the largest test that argument has had here. It is worth
+recording how it actually went, because the answer is not one-sided.
+
+Reading found a great deal. Eight rounds of walking concrete flows on paper —
+not re-reading the text, but tracing one operation end to end and asking what
+each party knows — turned up twenty-six defects across nine documents, and the
+serious ones were all in the seams between proposals rather than inside any one
+of them: two clients under one identity sharing a nonce, a stranger able to
+occupy a direct message's identifier forever, a revocation that deleted a
+mapping while the credential sat on the stolen phone.
+
+Building found things reading could not, and kept finding them after the
+documents were Active. Two are amendments in this repository. **SIP-23's
+`Clear`** exists because a client that loses its store leaves prekeys on the
+exchange that nobody can open, and two such clients rotate past each other
+indefinitely with nothing in the protocol saying why — visible in about a minute
+of using the thing, invisible in eight readings. **SIP-16's `Mine`** exists
+because a private channel's identifier is 32 bytes, absent from the directory by
+construction, and taken as *input* by every other operation: an invitation
+reached an account with no way to discover it had happened. Direct messages hid
+that, since their identifier is derived from the two members.
+
+The pattern worth generalising is not "specifications are insufficient". It is
+that a specification can only be checked against the questions its author
+thought to ask, and running the system asks different ones — mostly about state
+that outlives a process, which is exactly the ground a wire format does not
+cover. The two amendments are both about what an exchange still holds after a
+client, or the exchange itself, has restarted.
