@@ -45,6 +45,7 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [21](sip-0021.md) | Profiles and blocking | Exchange | Standards Track | Draft |
 | [22](sip-0022.md) | Device registry | Exchange | Standards Track | Draft |
 | [23](sip-0023.md) | Device prekeys | Exchange | Standards Track | Draft |
+| [24](sip-0024.md) | Admission requests | Exchange | Standards Track | Draft |
 
 ## Where this is going
 
@@ -183,6 +184,22 @@ still takes them; forward secrecy of *history* is not available to a design that
 keeps history, and what is defended is the exchange's store rather than the
 reader's disk.
 
+**SIP-24** answers what a whitelist means once a person is several keys. The
+managed whitelist is SIP-2's closed-set match and has no way in — a key not
+already on it cannot get there by anything the peer does, which is correct for a
+closed set and impractical the moment somebody buys a phone. So an unadmitted
+peer may *ask*, presenting the SIP-20 credential that shows which account
+vouches for it, and an administrator approves or denies with a SIP-10
+transaction. Admitting credentialled devices automatically was rejected: it
+would move the decision from the operator to anyone holding an account key, and
+a whitelist is only worth having as a record of decisions somebody made. **A
+credential is evidence, not authority.** The endpoint answers every request
+identically — the same reply whether the credential verified, whether the
+account is known, whether anything was queued — because it is the one route a
+refused caller can reach, and a reply that varied would let anyone probe which
+accounts a deployment admits. That is SIP-4's withheld beacon and SIP-12's
+single answer to `open`, applied to the door.
+
 Two things the set names as successors rather than writing. **Calls started from
 a chat** would be signalling only — ring, accept, decline, and a missed-call
 entry — since SIP-13 and SIP-15 already carry the media, though video appears
@@ -201,6 +218,6 @@ the exchange's four services, all built on SIP-3 — SIP-10 (sqnr + sqex), SIP-1
 (documenting a pattern those two compose), and SIP-15 (voice framing, which
 replaced SIP-14).
 
-**Draft, unimplemented:** SIP-6 through SIP-9, and SIP-16 through SIP-23 — the
+**Draft, unimplemented:** SIP-6 through SIP-9, and SIP-16 through SIP-24 — the
 chat set, written as specifications first and deliberately not yet built. Those
 wire formats are not stable and should not be built against yet.
