@@ -37,15 +37,15 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [13](sip-0013.md) | Rooms | Exchange | Standards Track | Active |
 | [14](sip-0014.md) | Discontinuous voice framing | Application | Standards Track | Replaced by 15 |
 | [15](sip-0015.md) | Voice framing with comfort noise | Application | Standards Track | Active |
-| [16](sip-0016.md) | Channels | Exchange | Standards Track | Draft |
-| [17](sip-0017.md) | Channel keys | Exchange | Standards Track | Draft |
-| [18](sip-0018.md) | Attachments and blobs | Exchange | Standards Track | Draft |
-| [19](sip-0019.md) | Chat messages | Application | Standards Track | Draft |
-| [20](sip-0020.md) | Portable delegation credentials | Application | Standards Track | Draft |
-| [21](sip-0021.md) | Profiles and blocking | Exchange | Standards Track | Draft |
-| [22](sip-0022.md) | Device registry | Exchange | Standards Track | Draft |
-| [23](sip-0023.md) | Device prekeys | Exchange | Standards Track | Draft |
-| [24](sip-0024.md) | Admission requests | Exchange | Standards Track | Draft |
+| [16](sip-0016.md) | Channels | Exchange | Standards Track | Active |
+| [17](sip-0017.md) | Channel keys | Exchange | Standards Track | Active |
+| [18](sip-0018.md) | Attachments and blobs | Exchange | Standards Track | Active |
+| [19](sip-0019.md) | Chat messages | Application | Standards Track | Active |
+| [20](sip-0020.md) | Portable delegation credentials | Application | Standards Track | Active |
+| [21](sip-0021.md) | Profiles and blocking | Exchange | Standards Track | Active |
+| [22](sip-0022.md) | Device registry | Exchange | Standards Track | Active |
+| [23](sip-0023.md) | Device prekeys | Exchange | Standards Track | Active |
+| [24](sip-0024.md) | Admission requests | Exchange | Standards Track | Active |
 
 ## Where this is going
 
@@ -215,9 +215,15 @@ question deserving its own document rather than a paragraph in somebody else's.
 and SIP-3 (both shipped in squic, Rust and Go, with a cross-implementation test
 in CI), SIP-4 (beacon), SIP-5 (mailbox), SIP-12 (relayed session) and SIP-13 (rooms) —
 the exchange's four services, all built on SIP-3 — SIP-10 (sqnr + sqex), SIP-11
-(documenting a pattern those two compose), and SIP-15 (voice framing, which
-replaced SIP-14).
+(documenting a pattern those two compose), SIP-15 (voice framing, which replaced
+SIP-14), and SIP-16 through SIP-24 — the chat set, built in sqex v0.9.0.
 
-**Draft, unimplemented:** SIP-6 through SIP-9, and SIP-16 through SIP-24 — the
-chat set, written as specifications first and deliberately not yet built. Those
-wire formats are not stable and should not be built against yet.
+The chat set went Active together, and had to. They are nine documents
+describing one thing: a channel that cannot be read without SIP-17's keys, which
+cannot be distributed without SIP-23's prekeys, which are published by a device
+SIP-22 knows about because SIP-20 says an account vouched for it. Moving any one
+of them alone would have meant declaring a wire format stable while the
+documents it depends on were still open to change.
+
+**Draft, unimplemented:** SIP-6 through SIP-9. Those wire formats are not stable
+and should not be built against yet.
