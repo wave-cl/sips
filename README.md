@@ -261,3 +261,28 @@ thought to ask, and running the system asks different ones — mostly about stat
 that outlives a process, which is exactly the ground a wire format does not
 cover. The two amendments are both about what an exchange still holds after a
 client, or the exchange itself, has restarted.
+
+Then building the client found a third kind, and it is the one that should worry
+anybody who writes specifications first: **the documents were right and the code
+silently narrowed them.** SIP-17 says a channel key is sealed to a *device*, and
+the exchange addressed envelopes to *accounts* at both ends — so the
+same-account rule, the one that lets a person link a client without an admin,
+could not be obeyed at all. This survived eight rounds of review, a full test
+suite and an entire release line, for a reason worth stating plainly: SIP-22
+says an account with no registered devices is its own device, so until somebody
+linked a second client the two keys were **identical** and the narrowing had no
+observable effect. A degenerate case had made a MUST untestable.
+
+Two more of the same shape turned up beside it. `Missing` — the one diagnostic
+this design has for a member who can fetch entries and open none of them —
+asked about accounts, so it reported every correctly sealed member as stranded
+and never reported the device that was. And SIP-17's post-revocation rekey, a
+MUST, was simply absent; it had been unreachable because with one device per
+account there was nothing to revoke.
+
+The generalisation, then, is narrower and more useful than "test more". A rule
+that distinguishes two things needs a test in which those two things actually
+differ. Where a specification permits a degenerate case — one device per
+account, one member per channel, one chunk per file — that case will be the one
+everything is tested against, and every distinction the rule draws will go
+unchecked until somebody builds the thing the distinction was for.
