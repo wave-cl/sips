@@ -27,6 +27,10 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [3](sip-0003.md) | Transport-carried Ed25519 identity | Transport | Standards Track | Active |
 | [4](sip-0004.md) | Liveness beacon | Exchange | Standards Track | Active |
 | [5](sip-0005.md) | Store-and-forward mailbox | Exchange | Standards Track | Active |
+| [6](sip-0006.md) | The Initial envelope and MAC1 | Transport | Standards Track | Draft |
+| [7](sip-0007.md) | Cookies and MAC2 under load | Transport | Standards Track | Draft |
+| [8](sip-0008.md) | Client key whitelisting | Transport | Standards Track | Draft |
+| [9](sip-0009.md) | Server authentication by pinned Ed25519 key | Transport | Standards Track | Draft |
 | [10](sip-0010.md) | Signed transaction envelope | Application | Standards Track | Active |
 | [11](sip-0011.md) | Delegating a transport identity | Application | Informational | Active |
 | [12](sip-0012.md) | Relayed session | Exchange | Standards Track | Active |
@@ -71,6 +75,16 @@ SIP-2  the handshake already proved the caller's transport key — expose it,
 That chain is now built end to end: a service connects, sQUIC proves its key and
 carries its name, and the exchange records that it is alive — no signature
 anywhere in the path.
+
+SIP-6 through SIP-9 are the layer that chain was standing on, written down after
+the fact. The Initial envelope and MAC1, the cookie defence that keeps a flood
+from costing a Diffie-Hellman per packet, the client whitelist, and the pinned
+server key — four mechanisms shipped in both implementations for a year and
+specified nowhere, so that SIP-2 and SIP-3 were both written in terms of a
+format whose only description was a Rust source file. Writing them found what
+that costs: squic-rust verified the pinned server key by searching the
+certificate for it, which an attacker could satisfy with a certificate they
+signed themselves, and neither implementation had a single test of the check.
 
 A consumer with a closed set of callers names them with SIP-2 alone, matching
 forward. An open exchange with no set to match against needs the name spelled
@@ -227,8 +241,11 @@ SIP-22 knows about because SIP-20 says an account vouched for it. Moving any one
 of them alone would have meant declaring a wire format stable while the
 documents it depends on were still open to change.
 
-**Draft, unimplemented:** SIP-25 through SIP-28. Those wire formats are not stable
-and should not be built against yet.
+**Draft:** SIP-6 through SIP-9, the transport mechanisms, which describe
+behaviour that has shipped in both implementations for a year and are Draft only
+until the audit against that behaviour is finished. And SIP-25 through SIP-28,
+which are the reverse case — unimplemented, with wire formats that are not
+stable and should not be built against yet.
 
 ## What writing them first did and did not catch
 
