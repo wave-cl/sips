@@ -60,9 +60,12 @@ against the identities it already holds. That closed the sqsshd impersonation
 hole it was written for.
 
 SIP-3 has now shipped too (squic-rust v0.15.0, squic-go v0.60.0) — a breaking
-flag-day that grew the Initial trailer to 108 bytes. Consumers move at their own
-pace: sqex and sqnr are across; sqssh and sqns remain on the earlier wire until
-they have a reason to follow.
+flag-day that grew the Initial trailer to 108 bytes. Every consumer is now
+across: sqex and sqnr moved first, and sqssh and sqns followed at squic v0.16.0.
+What moved them was not the envelope but the pinned-key defect SIP-9 found —
+the fix sits on the far side of the flag day, so taking it means crossing.
+A security fix that can only be had by breaking the wire is an argument for the
+version marker SIP-6 records as still outstanding.
 
 ```
 SIP-2  the handshake already proved the caller's transport key — expose it,
