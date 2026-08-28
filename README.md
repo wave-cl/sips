@@ -50,7 +50,7 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [26](sip-0026.md) | Capability advertisement | Exchange | Standards Track | Draft |
 | [27](sip-0027.md) | Vouching and attestation | Exchange | Standards Track | Draft |
 | [28](sip-0028.md) | Public key resolution | Exchange | Standards Track | Draft |
-| [29](sip-0029.md) | An envelope version marker | Transport | Standards Track | Draft |
+| [29](sip-0029.md) | An envelope version marker | Transport | Standards Track | Active |
 
 ## Where this is going
 
@@ -259,11 +259,15 @@ building anything, and the audit is what earned them: three defects fixed, seven
 rules that were kept but never tested now tested, and a cross-implementation
 harness for the cookie path, which had never been run across the two.
 
-**Draft, unimplemented:** SIP-25 through SIP-28, whose wire formats are not
-stable and should not be built against yet. And SIP-29, the envelope version
-marker, which is the follow-up SIP-3 named and SIP-6 twice deferred — written
-after a security fix had to be delivered through a wire break, because the
-envelope had no way to say which version it was.
+SIP-29 is Active in squic v0.17.0 and squic-go v0.62.0 — the follow-up SIP-3
+named and SIP-6 twice deferred, written after a security fix had to be delivered
+through a wire break because the envelope had no way to say which version it
+was. It is the first envelope change that did not need a flag day, and proving
+that was the point: a v0.17.0 client still completes a handshake with a v0.16.0
+server.
+
+**Draft, unimplemented:** SIP-25 through SIP-28. Those wire formats are not
+stable and should not be built against yet.
 
 ## What writing them first did and did not catch
 
