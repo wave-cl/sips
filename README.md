@@ -27,10 +27,6 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [3](sip-0003.md) | Transport-carried Ed25519 identity | Transport | Standards Track | Active |
 | [4](sip-0004.md) | Liveness beacon | Exchange | Standards Track | Active |
 | [5](sip-0005.md) | Store-and-forward mailbox | Exchange | Standards Track | Active |
-| [6](sip-0006.md) | Rendezvous and introduction | Exchange | Standards Track | Draft |
-| [7](sip-0007.md) | Capability advertisement | Exchange | Standards Track | Draft |
-| [8](sip-0008.md) | Vouching and attestation | Exchange | Standards Track | Draft |
-| [9](sip-0009.md) | Public key resolution | Exchange | Standards Track | Draft |
 | [10](sip-0010.md) | Signed transaction envelope | Application | Standards Track | Active |
 | [11](sip-0011.md) | Delegating a transport identity | Application | Informational | Active |
 | [12](sip-0012.md) | Relayed session | Exchange | Standards Track | Active |
@@ -46,6 +42,10 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [22](sip-0022.md) | Device registry | Exchange | Standards Track | Active |
 | [23](sip-0023.md) | Device prekeys | Exchange | Standards Track | Active |
 | [24](sip-0024.md) | Admission requests | Exchange | Standards Track | Active |
+| [25](sip-0025.md) | Rendezvous and introduction | Exchange | Standards Track | Draft |
+| [26](sip-0026.md) | Capability advertisement | Exchange | Standards Track | Draft |
+| [27](sip-0027.md) | Vouching and attestation | Exchange | Standards Track | Draft |
+| [28](sip-0028.md) | Public key resolution | Exchange | Standards Track | Draft |
 
 ## Where this is going
 
@@ -87,20 +87,20 @@ do purely by virtue of having connected. SIP-5 is the second such service — a
 mailbox where both ends are named by their connections and the payload is sealed
 so the exchange cannot read it. SIP-12 is the third: when two identities cannot
 reach each other at all, the exchange carries the session between them, with a
-key agreement it cannot complete. SIP-6 — introducing peers so they connect
+key agreement it cannot complete. SIP-25 — introducing peers so they connect
 *directly* — remains unbuilt, because hole punching needs a transport capability
 sQUIC does not have and a NAT type that cannot be assumed; SIP-12 is the fallback
-it predicted, and the two are complementary. SIP-8 is the exception that needs
+it predicted, and the two are complementary. SIP-27 is the exception that needs
 signatures, and says why.
 
-SIP-9 moves key-to-endpoint resolution into the exchange, unsigned and
+SIP-28 moves key-to-endpoint resolution into the exchange, unsigned and
 transport-authenticated. It trades sqns's self-authenticating records for one
 service instead of two, and is explicit that the trust boundary is availability
 rather than authenticity — a consumer still pins the key it asked for, so a
 dishonest exchange can deny but cannot impersonate.
 
-SIP-7 argued against itself on the grounds that capability belonged in an sqns
-record. SIP-9 resolves that objection by moving resolution itself, and SIP-7 is
+SIP-26 argued against itself on the grounds that capability belonged in an sqns
+record. SIP-28 resolves that objection by moving resolution itself, and SIP-26 is
 revised accordingly.
 
 SIP-10 sits at a different layer from the rest: not the transport or the
@@ -227,7 +227,7 @@ SIP-22 knows about because SIP-20 says an account vouched for it. Moving any one
 of them alone would have meant declaring a wire format stable while the
 documents it depends on were still open to change.
 
-**Draft, unimplemented:** SIP-6 through SIP-9. Those wire formats are not stable
+**Draft, unimplemented:** SIP-25 through SIP-28. Those wire formats are not stable
 and should not be built against yet.
 
 ## What writing them first did and did not catch
