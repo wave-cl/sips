@@ -51,6 +51,7 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [27](sip-0027.md) | Vouching and attestation | Exchange | Standards Track | Draft |
 | [28](sip-0028.md) | Public key resolution | Exchange | Standards Track | Draft |
 | [29](sip-0029.md) | An envelope version marker | Transport | Standards Track | Active |
+| [30](sip-0030.md) | Event streams | Exchange | Standards Track | Draft |
 
 ## Where this is going
 
@@ -325,3 +326,24 @@ differ. Where a specification permits a degenerate case — one device per
 account, one member per channel, one chunk per file — that case will be the one
 everything is tested against, and every distinction the rule draws will go
 unchecked until somebody builds the thing the distinction was for.
+
+**SIP-30** came from running the client rather than from reading anything. Every
+service here answers questions, so a client that wants to know whether an answer
+has changed asks again — and the chat client asked about nine times a second,
+per idle client, to be told nothing had happened. The same design made it up to
+an hour stale about somebody's display name, because SIP-21 caps profile updates
+at 32 an hour and a cache tuned to that is a cache an hour deep. Those look like
+two problems and are one: traffic proportional to uptime instead of to events,
+and staleness set by whatever cadence somebody picked. Neither improves by
+choosing better numbers.
+
+What made the fix small is that an HTTP/3 request is already a bidirectional
+stream. The exchange holds the response open and writes a frame when something
+changes; no new transport, no second connection, no server-opened stream whose
+type the peer's HTTP/3 layer would have to agree about. The frame names what
+moved and never carries it, which is the decision the rest of the proposal hangs
+from: the fetch routes stay the only authority on membership and visibility, and
+a hint that is lost or delivered twice costs a wasted request rather than
+corrupting anything. Datagrams were the obvious alternative — already carried,
+already fanned out by identity for SIP-12 — and were rejected for being good at
+the opposite job.
