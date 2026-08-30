@@ -52,6 +52,7 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [28](sip-0028.md) | Public key resolution | Exchange | Standards Track | Draft |
 | [29](sip-0029.md) | An envelope version marker | Transport | Standards Track | Active |
 | [30](sip-0030.md) | Event streams | Exchange | Standards Track | Draft |
+| [31](sip-0031.md) | Signed and chained channel entries | Exchange | Standards Track | Draft |
 
 ## Where this is going
 
@@ -347,3 +348,39 @@ a hint that is lost or delivered twice costs a wasted request rather than
 corrupting anything. Datagrams were the obvious alternative — already carried,
 already fanned out by identity for SIP-12 — and were rejected for being good at
 the opposite job.
+
+**SIP-31** is the one the chat set was leaning on and had not written down.
+SIP-16 says outright that an entry's author is *"the exchange's observation of
+the connection that posted"* and *"not a cryptographic fact"*, and SIP-17 hands
+every member the means to derive every other device's sealing subkey. Put those
+two sentences beside each other and the conclusion is that any member can mint a
+well-formed entry attributable to any other, and the only thing preventing it is
+the exchange declining to stamp somebody else's device on your connection. That
+holds while the entry stays where it was written and is worth nothing the moment
+it is repeated — to a replica, an export, a restored backup. SIP-27 had already
+stated the test: an attestation repeated to third parties who never saw the
+connection must carry its own proof.
+
+So entries are signed by the device that posted them, chained to an account by
+SIP-20, and membership changes are signed by the actor who caused them — because
+a conversation whose contents are verifiable and whose participants are not is
+half an answer. Each device's contributions form a hash chain, so an omitted
+entry leaves a gap rather than nothing at all.
+
+Three of its terms exist purely to stop a signature travelling, and the first
+was found by asking what else could be forged rather than by designing: a direct
+message's identifier is derived from its two accounts, so one conversation has
+identical channel bytes on **every** exchange in existence, and without the
+origin's key in the signing input an entry lifts from one exchange into
+another's copy of the same conversation and verifies there. SIP-10 had bound its
+server key against precisely this and said why. The second term dates a channel
+incarnation, because a recreated direct message reuses its identifier and
+restarts its numbering, and the third names the account, because nothing forbids
+two accounts credentialing one device.
+
+What it costs is stated in its abstract rather than its footnotes. Before it, a
+leaked transcript proved nothing — any member could have forged all of it, which
+is deniability arrived at by accident. Afterwards every member holds
+transferable proof of what every other member said. Replication needs a
+non-member to verify authorship and deniability exists to prevent exactly that,
+so the two cannot both be had, and the SIP takes replication and says so.
