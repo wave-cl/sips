@@ -53,6 +53,7 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [29](sip-0029.md) | An envelope version marker | Transport | Standards Track | Active |
 | [30](sip-0030.md) | Event streams | Exchange | Standards Track | Draft |
 | [31](sip-0031.md) | Signed and chained channel entries | Exchange | Standards Track | Draft |
+| [32](sip-0032.md) | Signing what a copy-holder would otherwise take on trust | Exchange | Standards Track | Draft |
 
 ## Where this is going
 
@@ -384,3 +385,53 @@ is deniability arrived at by accident. Afterwards every member holds
 transferable proof of what every other member said. Replication needs a
 non-member to verify authorship and deniability exists to prevent exactly that,
 so the two cannot both be had, and the SIP takes replication and says so.
+
+**SIP-32** came out of asking a duller question than SIP-31 did. Not "what could
+be forged" but, of every route on the exchange in turn, "what does this let
+somebody assert about somebody else". Six answers came back, and the two that
+mattered were both in the device registry — the one place the chat set had
+already done the work, which is presumably why nobody had looked again.
+
+SIP-31 asks a verifier for two steps: check the signature under the device the
+entry names, then check a SIP-20 credential binding that device to the account it
+names. **The second step could not be performed by anybody.** `sqexd` verifies a
+credential when a device registers and throws it away; `/device/list` answers with
+the exchange's summary of an artifact that no longer exists. So every SIP-31
+signature was resting on this exchange's memory of having once checked — which is
+the thing the whole proposal existed to stop being the answer. Retaining the
+credential and serving it is most of the fix, and it grants nothing new, because a
+credential names both keys in the clear to whoever verifies one.
+
+The same registry had the mirror of it. A credential is portable and a revocation
+was `Revoke { device }` over a connection: the mechanism SIP-22 advertises as the
+thing a portable credential structurally cannot do turned out to be the thing that
+could not travel. SIP-31's security section says dating a signature against a
+revocation is hard because `posted` is unsigned; the sharper reason is that there
+was no signed revocation to date it against. It is account-signed here, in SIP-20's
+shape and under a context in the same family, because the authority that issues a
+credential is the authority that withdraws it — and device-initiated revocation
+survives as an explicitly *local* act, since the seniority rule that legitimises it
+is evaluated against times only the exchange holds.
+
+The rest are smaller and share a test: can a party holding a copy, rather than a
+connection, check it? A channel's founding constitution — whether it is public,
+what it is called, how long it keeps things — was outside every signature, and
+renaming a public channel left no record at all. A profile signed nothing, which
+SIP-21 said outright. An envelope did not say who published it.
+
+One thing it deliberately does *not* sign. A redaction request stays unsigned,
+because the removal is the exchange's own act and a signature would attest that
+somebody asked — while the paired SIP-19 entry already attests that an authorised
+account asked, in the log, where a reader is looking anyway. So the pairing becomes
+what a reader checks, and a tombstone with nothing behind it now means "the
+exchange did this" rather than passing as an ordinary deletion.
+
+Underneath all of it is a distinction worth keeping. **A record replicates
+trustlessly because it has a winner; a log does not, because it has an order.**
+`sqns` has been replicating signed records between servers for a while and says
+why in one line: a peer that alters a record breaks its signature, and a peer that
+replays an old one loses to the higher serial already held. Profiles become records
+and inherit that whole. Channels stay logs, and what still blocks replicating one —
+ordering across devices, equivocation, retention divergence, and the fact that two
+exchanges have no way to peer at all — is the next proposal's problem, not this
+one's.
