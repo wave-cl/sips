@@ -54,6 +54,7 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [30](sip-0030.md) | Event streams | Exchange | Standards Track | Draft |
 | [31](sip-0031.md) | Signed and chained channel entries | Exchange | Standards Track | Draft |
 | [32](sip-0032.md) | Signing what a copy-holder would otherwise take on trust | Exchange | Standards Track | Draft |
+| [33](sip-0033.md) | Finding an exchange by name, over DNSSEC | Transport | Standards Track | Draft |
 
 ## Where this is going
 
