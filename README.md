@@ -56,6 +56,7 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [32](sip-0032.md) | Signing what a copy-holder would otherwise take on trust | Exchange | Standards Track | Draft |
 | [33](sip-0033.md) | Finding an exchange by name, over DNSSEC | Transport | Standards Track | Draft |
 | [34](sip-0034.md) | Exchange receipts | Exchange | Standards Track | Draft |
+| [35](sip-0035.md) | Exchange-to-exchange replication | Exchange | Standards Track | Draft |
 
 ## Where this is going
 
@@ -271,7 +272,7 @@ was. It is the first envelope change that did not need a flag day, and proving
 that was the point: a v0.17.0 client still completes a handshake with a v0.16.0
 server.
 
-**Draft, unimplemented:** SIP-25 through SIP-28 and SIP-30 through SIP-34. Those
+**Draft, unimplemented:** SIP-25 through SIP-28 and SIP-30 through SIP-35. Those
 wire formats are not stable and should not be built against yet.
 
 ## What writing them first did and did not catch
@@ -464,3 +465,37 @@ puts the exchange in the signing business for the first time anywhere in this
 stack, and it creates transferable proof that a named operator carried a named
 message at a named time — obtainable from any member. SIP-31 gave up deniability
 between members and said so; this gives up the operator's.
+
+**SIP-35** is the replication named at the end of the section above. Three of its four blockers are now
+answerable and the fourth was never a cryptographic problem: peering needs
+routes, and SIP-33 already supplies the half that finds and pins another
+exchange. The one that mattered is ordering, and the answer is narrower than it
+looks — a replica does not verify that the origin's interleaving is honest, which
+SIP-31 is right to say is impossible. It verifies that the origin *committed* to
+exactly this one, which is what repeating a log actually requires.
+
+The thing that makes it possible is SIP-31 rather than SIP-34. Before entries
+were signed, a replica could not have enforced membership on a private channel:
+the roster was the exchange's word, and a second exchange serving on that basis
+would have been asserting an access rule it had no evidence for. Signed
+membership actions and a signed constitution mean a replica *derives* who may
+read a channel from the log it holds. A replica that skips that verification has
+built a cache, and a cache of another exchange's assertions is worth less than
+nothing — it launders one operator's word into two.
+
+Two entries in its table of what replicates carry the interesting reasoning.
+**Prekeys must not**, and this is the sharpest case: SIP-23's whole value is that
+a prekey is served once and destroyed, so two exchanges each holding the pool
+each serve the same key believing they are the only one, and the recipient's
+duplicate check — SIP-23's own defence — starts firing on a condition that has
+become normal. Nothing reports it. And **block lists must not**, because SIP-32
+already explained that a signed block list would be a portable, non-repudiable
+statement about somebody a person wants nothing to do with, which is the opposite
+of what it is for.
+
+The honest cost is that every replica is another operator holding the social
+graph. A replica cannot read a private channel and learns everything around it —
+who is a member, when they joined, who posted, when, and how large it was. That
+is why authorising replication is a signed entry in the log the members already
+read rather than an arrangement between two operators, and why it is capped: the
+disclosure belongs to the people in the conversation, so the decision does too.
