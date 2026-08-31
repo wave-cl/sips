@@ -51,10 +51,10 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [27](sip-0027.md) | Vouching and attestation | Exchange | Standards Track | Draft |
 | [28](sip-0028.md) | Public key resolution | Exchange | Standards Track | Draft |
 | [29](sip-0029.md) | An envelope version marker | Transport | Standards Track | Active |
-| [30](sip-0030.md) | Event streams | Exchange | Standards Track | Draft |
-| [31](sip-0031.md) | Signed and chained channel entries | Exchange | Standards Track | Draft |
-| [32](sip-0032.md) | Signing what a copy-holder would otherwise take on trust | Exchange | Standards Track | Draft |
-| [33](sip-0033.md) | Finding an exchange by name, over DNSSEC | Transport | Standards Track | Draft |
+| [30](sip-0030.md) | Event streams | Exchange | Standards Track | Active |
+| [31](sip-0031.md) | Signed and chained channel entries | Exchange | Standards Track | Active |
+| [32](sip-0032.md) | Signing what a copy-holder would otherwise take on trust | Exchange | Standards Track | Active |
+| [33](sip-0033.md) | Finding an exchange by name, over DNSSEC | Transport | Standards Track | Active |
 | [34](sip-0034.md) | Exchange receipts | Exchange | Standards Track | Draft |
 | [35](sip-0035.md) | Exchange-to-exchange replication | Exchange | Standards Track | Draft |
 | [36](sip-0036.md) | Call signalling | Application | Standards Track | Draft |
@@ -249,8 +249,9 @@ and SIP-3 (both shipped in squic, Rust and Go, with a cross-implementation test
 in CI), SIP-4 (beacon), SIP-5 (mailbox), SIP-12 (relayed session) and SIP-13 (rooms) —
 the exchange's four services, all built on SIP-3 — SIP-10 (sqnr + sqex), SIP-11
 (documenting a pattern those two compose), SIP-15 (voice framing, which replaced
-SIP-14), and SIP-16 through SIP-24 — the chat set, built across the sqex 0.9
-and 0.10 lines.
+SIP-14), SIP-16 through SIP-24 — the chat set, built across the sqex 0.9
+and 0.10 lines — and SIP-30 through SIP-33, which went Active together after
+the audit described at the end of this file.
 
 The chat set went Active together, and had to. They are nine documents
 describing one thing: a channel that cannot be read without SIP-17's keys, which
@@ -273,8 +274,8 @@ was. It is the first envelope change that did not need a flag day, and proving
 that was the point: a v0.17.0 client still completes a handshake with a v0.16.0
 server.
 
-**Draft, unimplemented:** SIP-25 through SIP-28 and SIP-30 through SIP-36. Those
-wire formats are not stable and should not be built against yet.
+**Draft, unimplemented:** SIP-25 through SIP-28, and SIP-34 through SIP-36.
+Those wire formats are not stable and should not be built against yet.
 
 ## What writing them first did and did not catch
 
@@ -439,6 +440,67 @@ and inherit that whole. Channels stay logs, and what still blocks replicating on
 ordering across devices, equivocation, retention divergence, and the fact that two
 exchanges have no way to peer at all — is the next proposal's problem, not this
 one's.
+
+## What the audit of SIP-30 to SIP-33 found
+
+Those four went Active together, and were promoted the way SIP-6 through SIP-9
+were: by reading the documents against the code rather than by editing a status
+line. All four had shipped — across sqex v0.19.0 to v0.24.1 — and all four were
+still marked Draft, with this file calling them unimplemented while a public
+exchange served them. Sixty-seven normative rules, and the documents came out
+right; the code came out right in all but three places.
+
+Two of the three were one defect wearing two coats, and both were in SIP-31's
+verdicts.
+
+**A fork was being reported as a gap.** SIP-31 defines a fork literally — "two
+entries by one device at one `chain_seq`, both validly signed" — and the client
+compared an entry's position against the *next* position it expected. After an
+entry at N the mark held N+1, so a second entry at N failed that comparison and
+fell through to the arm for a gap. The distinction is the whole point of having
+both: a gap is ordinary, produced by pruning and by joining late, and SIP-31
+says a client MUST NOT present one as misconduct — while a fork cannot happen
+without a device signing twice or somebody replaying, and is the one verdict
+there that is evidence.
+
+**And nothing read the verdicts in any case.** `Timeline::broken()`, the
+accessor carrying every non-`Valid` verdict, had no caller anywhere in the
+workspace. The classification ran, folded into the timeline, and was thrown
+away. `Trouble` — the struct deciding what the reader is told — had no field for
+a fork or for an entry nobody could attribute, so a channel containing one
+looked quiet. Only `Forged` was acted on, by dropping the entry before it
+reached a reader.
+
+That is the same shape as the SIP-17 narrowing recorded above: correct at the
+layer that computes it, dropped at the point of use, and invisible because
+nothing produces the input by accident.
+
+The third was a rule nothing had ever driven, and the reason is worth naming
+because it is a pattern rather than an oversight. SIP-32's "an exchange MUST
+refuse a record whose serial is at or below the one it holds" was untestable by
+accident: the profile test helper climbs the serial on every call — it says so
+in its own doc comment — so every test drove the accepting path and nothing ever
+drove the refusal. SIP-30's rule that a profile event MUST NOT cross a block had
+the same hole from the other end, because no test in that file ever set a block.
+
+So the generalisation from the chat set holds, with an addition. Where a rule
+distinguishes two things, the tests need one of each — and **the helper that
+makes the common case convenient is usually the thing preventing the other.**
+
+What the audit did *not* find is worth recording too, since a clean result read
+as silence would make the next audit look unnecessary. SIP-33 held throughout,
+including the two rotation rules that are easiest to get wrong: a pin is kept
+when the old key still appears beside a new one, and having been seen beside the
+pinned key does not earn the new key the pin. SIP-30's delivery rules — the
+causing account excluded, a removed account included, blocks filtered both ways
+— were all in place with their reasoning written down beside them. SIP-32's
+attested-versus-local revocation distinction was intact and tested.
+
+One rule is implemented correctly and remains untested, stated here rather than
+quietly left: SIP-31's requirement that a device resume from the greater of what
+it remembers and what the exchange reports. Exercising it needs an exchange that
+deliberately under-reports, which is the one adversary the harness cannot
+currently play.
 
 **SIP-34** is a proposal SIP-31 had already written and declined. Its rationale
 describes an exchange receipt over `(channel, seq, posted, entry hash)`, calls it
