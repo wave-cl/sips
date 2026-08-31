@@ -55,6 +55,7 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [31](sip-0031.md) | Signed and chained channel entries | Exchange | Standards Track | Draft |
 | [32](sip-0032.md) | Signing what a copy-holder would otherwise take on trust | Exchange | Standards Track | Draft |
 | [33](sip-0033.md) | Finding an exchange by name, over DNSSEC | Transport | Standards Track | Draft |
+| [34](sip-0034.md) | Exchange receipts | Exchange | Standards Track | Draft |
 
 ## Where this is going
 
@@ -270,8 +271,8 @@ was. It is the first envelope change that did not need a flag day, and proving
 that was the point: a v0.17.0 client still completes a handshake with a v0.16.0
 server.
 
-**Draft, unimplemented:** SIP-25 through SIP-28. Those wire formats are not
-stable and should not be built against yet.
+**Draft, unimplemented:** SIP-25 through SIP-28 and SIP-30 through SIP-34. Those
+wire formats are not stable and should not be built against yet.
 
 ## What writing them first did and did not catch
 
@@ -436,3 +437,30 @@ and inherit that whole. Channels stay logs, and what still blocks replicating on
 ordering across devices, equivocation, retention divergence, and the fact that two
 exchanges have no way to peer at all — is the next proposal's problem, not this
 one's.
+
+**SIP-34** is a proposal SIP-31 had already written and declined. Its rationale
+describes an exchange receipt over `(channel, seq, posted, entry hash)`, calls it
+"a better idea", declines it "only for this version", and notes that nothing in
+the wire would have to change to accept it. What changed is that three separate
+things turned out to be waiting for it: SIP-31's own difficulty in dating a
+signature against a revocation, because `posted` is the only clock and nobody
+signs it; SIP-32's revocations becoming signed artifacts with times of their own,
+which sharpened the asymmetry rather than resolving it; and the ordering problem
+above, which a replica cannot verify because nobody committed to it.
+
+One thing about it is not SIP-31's design. The receipt commits to a **running
+head** — a hash chain over every entry the channel has carried — rather than to
+the entry alone, and the extra thirty-two bytes are what make the mechanism cover
+omission. With the entry hash by itself, two receipts contradict only when they
+name the same position with different content, so an exchange can show one reader
+a log containing entry five and another a log that skips it, and the two readers
+hold receipts for different positions that never disagree. Because each head
+commits to everything before it, any divergence at all makes every later receipt
+irreconcilable, and one comparison anywhere after the split proves it. The cost
+is thirty-two bytes of state per channel and one hash per post.
+
+What it gives up is stated where SIP-31 stated it rather than in a footnote. It
+puts the exchange in the signing business for the first time anywhere in this
+stack, and it creates transferable proof that a named operator carried a named
+message at a named time — obtainable from any member. SIP-31 gave up deniability
+between members and said so; this gives up the operator's.
