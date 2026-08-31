@@ -57,6 +57,7 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [33](sip-0033.md) | Finding an exchange by name, over DNSSEC | Transport | Standards Track | Draft |
 | [34](sip-0034.md) | Exchange receipts | Exchange | Standards Track | Draft |
 | [35](sip-0035.md) | Exchange-to-exchange replication | Exchange | Standards Track | Draft |
+| [36](sip-0036.md) | Call signalling | Application | Standards Track | Draft |
 
 ## Where this is going
 
@@ -272,7 +273,7 @@ was. It is the first envelope change that did not need a flag day, and proving
 that was the point: a v0.17.0 client still completes a handshake with a v0.16.0
 server.
 
-**Draft, unimplemented:** SIP-25 through SIP-28 and SIP-30 through SIP-35. Those
+**Draft, unimplemented:** SIP-25 through SIP-28 and SIP-30 through SIP-36. Those
 wire formats are not stable and should not be built against yet.
 
 ## What writing them first did and did not catch
@@ -499,3 +500,32 @@ who is a member, when they joined, who posted, when, and how large it was. That
 is why authorising replication is a signed entry in the log the members already
 read rather than an arrangement between two operators, and why it is capped: the
 disclosure belongs to the people in the conversation, so the decision does too.
+
+**SIP-36** is the smallest of the three and the only one that adds no
+cryptography at all. Calls started from a chat, which this file named as a successor
+and described accurately — signalling only, since SIP-12, SIP-13 and SIP-15
+already carry the media and ship in `sqex-voice`. The invitation is an ordinary
+SIP-19 body, so it is sealed by SIP-17, signed by SIP-31 and receipted by SIP-34
+without asking for anything; the ring is a signal, because a ringing screen is
+worthless an hour later; and the record of what happened is a second entry, so
+"you declined my call" is as verifiable as "you sent me this message".
+
+It needed to be a document rather than a client convention for one reason that
+was wrong by default. **Signals are delivered per account, at most once** — which
+is right for typing and exactly wrong for ringing, because SIP-22 gives a person
+several devices and a ring that reaches one of them leaves the other three
+silent. SIP-30 compounds it with a rule that is correct everywhere else: a signal
+event must not go to the account that caused it, which is precisely the account
+whose *other* devices need to stop ringing when one accepts. So call signals are
+delivered per device, and the exclusion narrows from the account to the single
+device that already knows. That is the entire wire cost of multi-device calling,
+and it is invisible until somebody links a second client — the same shape of
+defect the chat set already produced twice.
+
+Two things it declines to solve. A room secret in a durable entry is a bearer
+capability with no revocation, and sealing it to the members is the strongest
+available answer rather than a good one: the participants leave and the door
+stays open. And a channel of 256 cannot hold a call everyone joins, because
+SIP-13's mesh is quadratic and the alternative is an exchange that can hear the
+call. That is a limit of the architecture, not a gap in the document, and it says
+so rather than leaving it to be discovered at the ninth person.
