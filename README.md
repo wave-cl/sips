@@ -58,6 +58,7 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [34](sip-0034.md) | Exchange receipts | Exchange | Standards Track | Draft |
 | [35](sip-0035.md) | Exchange-to-exchange replication | Exchange | Standards Track | Draft |
 | [36](sip-0036.md) | Call signalling | Application | Standards Track | Draft |
+| [37](sip-0037.md) | A cheap outer MAC, and silence under load | Transport | Standards Track | Draft |
 
 ## Where this is going
 
