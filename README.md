@@ -58,7 +58,7 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [34](sip-0034.md) | Exchange receipts | Exchange | Standards Track | Draft |
 | [35](sip-0035.md) | Exchange-to-exchange replication | Exchange | Standards Track | Draft |
 | [36](sip-0036.md) | Call signalling | Application | Standards Track | Draft |
-| [37](sip-0037.md) | A cheap outer MAC, and silence under load | Transport | Standards Track | Draft |
+| [37](sip-0037.md) | A cheap outer MAC, and silence under load | Transport | Standards Track | Active |
 
 ## Where this is going
 
@@ -592,3 +592,41 @@ stays open. And a channel of 256 cannot hold a call everyone joins, because
 SIP-13's mesh is quadratic and the alternative is an exchange that can hear the
 call. That is a limit of the architecture, not a gap in the document, and it says
 so rather than leaving it to be discovered at the ninth person.
+
+## What promoting SIP-37 checked
+
+Promoted the same way: by reading the document against both implementations
+rather than by editing a status line. SIP-37 touches the wire, so SIP-1's
+higher bar applies and it needs Rust *and* Go — which is the clause that exists
+because these two have drifted before.
+
+Ten normative rules. Both implementations satisfy all ten, and the two agree
+with each other rather than merely each with the text:
+
+- The trailer is 125 bytes in both, and squic-rust asserts it at compile time.
+- `K0 = SHA-256("squic-mac0-v1" || server_x25519_pub)`, byte-identical labels,
+  derived once at endpoint construction rather than per packet as the SHOULD
+  asks.
+- `K0` is not SIP-7's cookie key: the labels differ (`squic-mac0-v1` against
+  `squic-cookie-v1`), which is the only thing separating two constructions over
+  the same public key.
+- MAC0 covers `version || datagram || x25519 || ed25519 || ts || nonce`, with
+  the version prefixed and the X25519 field explicit, and is compared in
+  constant time on both sides — `constant_time_eq` in Rust,
+  `subtle.ConstantTimeCompare` in Go.
+- **The validation order holds, including the two adjacencies the SIP says
+  carry its weight.** MAC0 is checked before the cookie decision and before the
+  Diffie-Hellman in both: in `try_version` at lines 61 / 67 / 115, and in
+  `tryVersion` at 49 / 54 / 101.
+
+Nothing needed changing. That is a duller result than the SIP-30 to SIP-33
+audit, which found three defects, and it is worth saying why rather than
+claiming better discipline: SIP-37 was written alongside its implementation
+during a security audit, with a regression test per rule and a negative control
+run for each, instead of being written first and implemented later. The two
+sets are not evidence about the same process.
+
+One thing this promotion does not settle. SIP-37 is Active on the strength of
+two implementations and one deployment, and the deployment is the Rust one.
+The Go implementation is correct by inspection and by the cross-implementation
+matrix; it has never served production traffic on version 3.
