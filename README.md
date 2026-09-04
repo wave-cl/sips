@@ -251,8 +251,10 @@ in CI), SIP-4 (beacon), SIP-5 (mailbox), SIP-12 (relayed session) and SIP-13 (ro
 the exchange's four services, all built on SIP-3 — SIP-10 (sqnr + sqex), SIP-11
 (documenting a pattern those two compose), SIP-15 (voice framing, which replaced
 SIP-14), SIP-16 through SIP-24 — the chat set, built across the sqex 0.9
-and 0.10 lines — and SIP-30 through SIP-33, which went Active together after
-the audit described at the end of this file.
+and 0.10 lines — SIP-30 through SIP-33, which went Active together after the
+audit described at the end of this file — and SIP-37 (MAC0, squic-rust v0.20.0
+and squic-go v0.65.0), the one entry here since SIP-29 to have needed both
+implementations, because it is the only recent change that touches the wire.
 
 The chat set went Active together, and had to. They are nine documents
 describing one thing: a channel that cannot be read without SIP-17's keys, which
