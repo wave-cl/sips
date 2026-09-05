@@ -55,7 +55,7 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [31](sip-0031.md) | Signed and chained channel entries | Exchange | Standards Track | Active |
 | [32](sip-0032.md) | Signing what a copy-holder would otherwise take on trust | Exchange | Standards Track | Active |
 | [33](sip-0033.md) | Finding an exchange by name, over DNSSEC | Transport | Standards Track | Active |
-| [34](sip-0034.md) | Exchange receipts | Exchange | Standards Track | Draft |
+| [34](sip-0034.md) | Exchange receipts | Exchange | Standards Track | Active |
 | [35](sip-0035.md) | Exchange-to-exchange replication | Exchange | Standards Track | Draft |
 | [36](sip-0036.md) | Call signalling | Application | Standards Track | Draft |
 | [37](sip-0037.md) | A cheap outer MAC, and silence under load | Transport | Standards Track | Replaced |
@@ -277,8 +277,21 @@ was. It is the first envelope change that did not need a flag day, and proving
 that was the point: a v0.17.0 client still completes a handshake with a v0.16.0
 server.
 
-**Draft, unimplemented:** SIP-25 through SIP-28, and SIP-34 through SIP-36.
-Those wire formats are not stable and should not be built against yet.
+SIP-34 is Active in sqex 0.29.0. Two things in it did not survive contact with
+the code, and both were found by trying to verify a receipt rather than by
+re-reading the text. It claimed its wire change was additive; it was not, because
+`Entries` carries entries with no per-entry length prefix and both outer decoders
+refuse trailing bytes on purpose, so there was nowhere to append and it took two
+new request type bytes instead — the same answer SIP-31 reached from the other
+direction with `Post`. And its `Entries` tip was unverifiable by exactly the
+reader it exists for: `posted` is bound into the signature and the tip did not
+carry it, so only a reader already holding the entry could check the claim about
+it. A third gap is stated in the SIP rather than closed: a system entry's hash
+cannot be recomputed by a third party, because SIP-31's `arg` is never
+transmitted.
+
+**Draft, unimplemented:** SIP-25 through SIP-28, SIP-35 and SIP-36. Those wire
+formats are not stable and should not be built against yet.
 
 ## What writing them first did and did not catch
 
