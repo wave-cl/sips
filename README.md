@@ -28,7 +28,7 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [4](sip-0004.md) | Liveness beacon | Exchange | Standards Track | Active |
 | [5](sip-0005.md) | Store-and-forward mailbox | Exchange | Standards Track | Active |
 | [6](sip-0006.md) | The Initial envelope and MAC1 | Transport | Standards Track | Active |
-| [7](sip-0007.md) | Cookies and MAC2 under load | Transport | Standards Track | Active |
+| [7](sip-0007.md) | Cookies under load | Transport | Standards Track | Active |
 | [8](sip-0008.md) | Client key whitelisting | Transport | Standards Track | Active |
 | [9](sip-0009.md) | Server authentication by pinned Ed25519 key | Transport | Standards Track | Active |
 | [10](sip-0010.md) | Signed transaction envelope | Application | Standards Track | Active |
@@ -58,7 +58,7 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [34](sip-0034.md) | Exchange receipts | Exchange | Standards Track | Draft |
 | [35](sip-0035.md) | Exchange-to-exchange replication | Exchange | Standards Track | Draft |
 | [36](sip-0036.md) | Call signalling | Application | Standards Track | Draft |
-| [37](sip-0037.md) | A cheap outer MAC, and silence under load | Transport | Standards Track | Active |
+| [37](sip-0037.md) | A cheap outer MAC, and silence under load | Transport | Standards Track | Replaced |
 
 ## Where this is going
 
@@ -594,6 +594,52 @@ stays open. And a channel of 256 cannot hold a call everyone joins, because
 SIP-13's mesh is quadratic and the alternative is an exchange that can hear the
 call. That is a limit of the architecture, not a gap in the document, and it says
 so rather than leaving it to be discovered at the ninth person.
+
+## Envelope version 4, and what it did to SIP-37
+
+SIP-37 is **Replaced by SIP-6**. It was promoted to Active on 31 August 2026
+after a ten-rule audit against both implementations; five days later a second
+audit found that the two constructions it and SIP-7 defined — MAC0 and MAC2 —
+were two states of one proof. A cookie is delivered encrypted under a key
+derived from the server's public key, so a valid MAC2 already demonstrated the
+knowledge MAC0 existed to prove; the two fields were never both load-bearing on
+the same packet, and version 3 spent 32 bytes on them.
+
+Envelope version 4 merges them into one 16-byte **gate tag** with two possible
+keys, makes the Ed25519 identity field conditional on a header flag rather than
+32 zero bytes, and drops the nonce that SIP-6 already recorded as neither
+tracked nor a replay defence. The anonymous trailer goes from 125 bytes to 69.
+
+**The property SIP-37 established is unchanged**: a caller who does not hold the
+server's public key is turned away for one HMAC, in silence, whether or not the
+server is under load. SIP-37 is retained rather than deleted because its
+Motivation is still the clearest statement of why the gate exists, and because
+its three-outcome rule under load — accept on a cookie-keyed tag, challenge on a
+key-keyed one, silence otherwise — is the part an implementer is most likely to
+get subtly wrong. It is reproduced verbatim in SIP-6.
+
+Versions 1 to 3 are retired outright rather than deprecated. Versions 1 and 2
+carried no gate at all, so a server accepting them did a Diffie-Hellman for any
+caller who sent a plausible Initial — measured, not assumed, on an instrumented
+build. A version that must be narrowed *away from* in order to be safe will be
+left wide somewhere.
+
+The cut was coordinated with no overlap release, which SIP-29's servers-first
+rule would otherwise forbid, and the exception is recorded in SIP-29 rather than
+smoothed over: there was no older version to default to once 1 to 3 were
+removed, so the estate paid a real outage window in which every failure was
+silent. Serving `[3, 4]` for one release was offered and declined.
+
+Two guards came out of it. A client refuses to dial on a version it cannot emit;
+a server refuses to *start* on an accept set naming a version it cannot parse,
+or an empty one. The second matters more: without it such a server binds,
+reports itself healthy, and drops every Initial in silence. `ex.squic.org` ran
+`accepted_envelope_versions = [3]` right up to the cut.
+
+## What promoting SIP-37 checked
+
+> Retained as the record of that promotion. SIP-37 is now Replaced; the audit
+> below was accurate when it ran and describes envelope version 3.
 
 ## What promoting SIP-37 checked
 
