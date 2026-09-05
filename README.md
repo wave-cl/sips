@@ -338,20 +338,20 @@ signatures and refuses to check anything else. Its fourth question — whether t
 support negative claims at all — is answered in the conservative direction, and
 none is registered.
 
-**SIP-25 is half built and stays Draft**, which is the honest state. Its
-coordination works: two identities who each ask are told where the other is and
-when to begin, neither learns anything until both have asked, and the address is
-the one the exchange observed rather than one a caller named. Nothing then
-connects, because sQUIC dials from a fresh ephemeral port and reusing the
-observed mapping is the whole mechanism. The SIP now names what closing that
-takes — one socket that both dials and accepts, with the envelope added on send
-and stripped on receive under different keys in each direction, in both
-implementations — and records that even then, demonstrating NAT traversal needs
-two peers behind two real NATs rather than more code.
+**SIP-25 is built and stays Draft**, which is a distinction worth drawing. Its
+coordination works, its transport blocker is gone — squic v0.26.0 and squic-go
+v0.71.0 added a dial that can choose its local port and a punch that opens a NAT
+mapping — and two peers introduced by an exchange now connect directly with the
+exchange out of the path. What is missing is not code. On loopback there is no
+NAT, so the tests prove the coordination produces a usable address and that a
+connection leaves from the port that was introduced, and nothing about whether
+that survives a real NAT. Promoting it needs somebody to run `sqex meet` from
+two homes.
 
-**Draft, unimplemented:** SIP-25's punching half. Nothing else in the set is
-unbuilt, which is a first — and worth saying, because the gap between a written
-design and a built one is where this repository's own argument lives.
+**Draft:** SIP-25 alone, and not for want of an implementation. Nothing in the
+set is unbuilt, which is a first — and the one thing still holding a SIP back is
+evidence rather than code, which is the shape this repository's own argument
+predicts.
 
 ## What writing them first did and did not catch
 
