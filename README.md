@@ -57,7 +57,7 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [33](sip-0033.md) | Finding an exchange by name, over DNSSEC | Transport | Standards Track | Active |
 | [34](sip-0034.md) | Exchange receipts | Exchange | Standards Track | Active |
 | [35](sip-0035.md) | Exchange-to-exchange replication | Exchange | Standards Track | Draft |
-| [36](sip-0036.md) | Call signalling | Application | Standards Track | Draft |
+| [36](sip-0036.md) | Call signalling | Application | Standards Track | Active |
 | [37](sip-0037.md) | A cheap outer MAC, and silence under load | Transport | Standards Track | Replaced |
 
 ## Where this is going
@@ -290,8 +290,19 @@ it. A third gap is stated in the SIP rather than closed: a system entry's hash
 cannot be recomputed by a third party, because SIP-31's `arg` is never
 transmitted.
 
-**Draft, unimplemented:** SIP-25 through SIP-28, SIP-35 and SIP-36. Those wire
-formats are not stable and should not be built against yet.
+SIP-36 is Active in sqex 0.30.0, and it too had one thing wrong that only
+building it found: its flow has the exchange emit the ringing event on writing
+the invitation, and **in a private channel the exchange cannot read the
+invitation** — the body is sealed under SIP-17, so a call is indistinguishable
+from a sentence. The event is derived from the `ringing` signal instead, which
+is in the clear and names the invitation. The same mistake was in its rate-limit
+advice, for the same reason. A second correction hardens a rule rather than
+fixing it: the exchange excludes the device it *observed* from a ring's
+fan-out, not the one the signal's body names, because a client naming a
+sibling's key could otherwise silence that sibling's phone.
+
+**Draft, unimplemented:** SIP-25 through SIP-28, and SIP-35. Those wire formats
+are not stable and should not be built against yet.
 
 ## What writing them first did and did not catch
 
