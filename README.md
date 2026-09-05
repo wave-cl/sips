@@ -47,9 +47,9 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [23](sip-0023.md) | Device prekeys | Exchange | Standards Track | Active |
 | [24](sip-0024.md) | Admission requests | Exchange | Standards Track | Active |
 | [25](sip-0025.md) | Rendezvous and introduction | Exchange | Standards Track | Draft |
-| [26](sip-0026.md) | Capability advertisement | Exchange | Standards Track | Draft |
-| [27](sip-0027.md) | Vouching and attestation | Exchange | Standards Track | Draft |
-| [28](sip-0028.md) | Public key resolution | Exchange | Standards Track | Draft |
+| [26](sip-0026.md) | Capability advertisement | Exchange | Standards Track | Active |
+| [27](sip-0027.md) | Vouching and attestation | Exchange | Standards Track | Active |
+| [28](sip-0028.md) | Public key resolution | Exchange | Standards Track | Active |
 | [29](sip-0029.md) | An envelope version marker | Transport | Standards Track | Active |
 | [30](sip-0030.md) | Event streams | Exchange | Standards Track | Active |
 | [31](sip-0031.md) | Signed and chained channel entries | Exchange | Standards Track | Active |
@@ -326,10 +326,32 @@ it can never produce again, and comparing two receipts for one position is
 precisely what catching an equivocation is. Deriving made SIP-35's central
 property undetectable.
 
-**Draft, unimplemented:** SIP-25 through SIP-28. Those wire formats are not
-stable and should not be built against yet. Every other SIP in the set is Active,
-Replaced or Rejected — which is a first, and worth saying because the gap between
-a written design and a built one is where this repository's own argument lives.
+SIP-26, 27 and 28 are Active in sqex 0.33.0. Two of the three were shaped by
+having been written first, in ways worth recording. **SIP-26 argued against
+itself** — correctly, while resolution lived in a signed record — and its own
+recommendation was that it should become a field of SIP-28 rather than a
+mechanism; it did, and nothing was added beyond what it predicted would survive.
+**SIP-27 was a sketch with three open questions**, and answering them was most of
+the work: a registry of four claim types with an escape hatch, a withdrawal that
+only its issuer may make and that guarantees nothing, and an exchange that checks
+signatures and refuses to check anything else. Its fourth question — whether to
+support negative claims at all — is answered in the conservative direction, and
+none is registered.
+
+**SIP-25 is half built and stays Draft**, which is the honest state. Its
+coordination works: two identities who each ask are told where the other is and
+when to begin, neither learns anything until both have asked, and the address is
+the one the exchange observed rather than one a caller named. Nothing then
+connects, because sQUIC dials from a fresh ephemeral port and reusing the
+observed mapping is the whole mechanism. The SIP now names what closing that
+takes — one socket that both dials and accepts, with the envelope added on send
+and stripped on receive under different keys in each direction, in both
+implementations — and records that even then, demonstrating NAT traversal needs
+two peers behind two real NATs rather than more code.
+
+**Draft, unimplemented:** SIP-25's punching half. Nothing else in the set is
+unbuilt, which is a first — and worth saying, because the gap between a written
+design and a built one is where this repository's own argument lives.
 
 ## What writing them first did and did not catch
 
