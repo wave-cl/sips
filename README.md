@@ -301,8 +301,26 @@ fixing it: the exchange excludes the device it *observed* from a ring's
 fan-out, not the one the signal's body names, because a client naming a
 sibling's key could otherwise silence that sibling's phone.
 
-**Draft, unimplemented:** SIP-25 through SIP-28, and SIP-35. Those wire formats
-are not stable and should not be built against yet.
+SIP-35 is **half built and still Draft**, which is the honest state and worth
+being explicit about. Its origin half works: an admin authorises a replica in
+the log, a whitelisted peer can pull, and every peering refusal is the same
+refusal so the routes cannot be used as an existence oracle. A replica's
+verification and storage work too, including catching an origin that says two
+different things about one position. What is missing is the loop between them —
+`sqexd` has no runtime sQUIC client to pull with — and the record half entirely.
+The four routes are registered as unreachable in the route-coverage test rather
+than served and forgotten.
+
+Building it corrected SIP-34, which is the sort of thing only a second consumer
+finds. That work derived receipts instead of storing them, on the grounds that
+Ed25519 is deterministic and an exchange can always re-sign. An origin can. A
+replica cannot — it holds no origin seed — so a receipt it did not keep is one
+it can never produce again, and comparing two receipts for one position is
+precisely what catching an equivocation is. Deriving made SIP-35's central
+property undetectable.
+
+**Draft, unimplemented:** SIP-25 through SIP-28. Those wire formats are not
+stable and should not be built against yet.
 
 ## What writing them first did and did not catch
 
