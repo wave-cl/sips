@@ -45,13 +45,28 @@ done
 
 # Requires: must name SIPs that exist, or the dependency chain is fiction.
 # template.md is skipped: its preamble is placeholder text, not a claim.
+#
+# And SIP-1 is stricter than existence: "Requires names SIPs that must be
+# Active first." So an Active SIP whose requirement is still Draft claims a
+# foundation that has not been agreed yet, and one pointing at a Replaced SIP
+# should be naming its replacement instead. Both are checked here, and only
+# for Active SIPs -- a Draft is entitled to be written against a Draft, which
+# is how every one of these started.
 for f in sip-[0-9]*.md; do
+    fstatus=$(sed -n 's/^Status: *//p' "$f" | head -1)
     for n in $(sed -n 's/^Requires: *//p' "$f" | tr ',' ' '); do
         case "$n" in
             ''|*[!0-9]*) note "$f: Requires '$n' is not a SIP number"; continue ;;
         esac
         target=$(printf 'sip-%04d.md' "$n")
-        [ -f "$target" ] || note "$f requires SIP $n, which does not exist"
+        if [ ! -f "$target" ]; then
+            note "$f requires SIP $n, which does not exist"
+            continue
+        fi
+        [ "$fstatus" = "Active" ] || continue
+        tstatus=$(sed -n 's/^Status: *//p' "$target" | head -1)
+        [ "$tstatus" = "Active" ] ||
+            note "$f is Active but requires SIP $n, which is $tstatus"
     done
 done
 
