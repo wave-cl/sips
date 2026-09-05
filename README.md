@@ -56,7 +56,7 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [32](sip-0032.md) | Signing what a copy-holder would otherwise take on trust | Exchange | Standards Track | Active |
 | [33](sip-0033.md) | Finding an exchange by name, over DNSSEC | Transport | Standards Track | Active |
 | [34](sip-0034.md) | Exchange receipts | Exchange | Standards Track | Active |
-| [35](sip-0035.md) | Exchange-to-exchange replication | Exchange | Standards Track | Draft |
+| [35](sip-0035.md) | Exchange-to-exchange replication | Exchange | Standards Track | Active |
 | [36](sip-0036.md) | Call signalling | Application | Standards Track | Active |
 | [37](sip-0037.md) | A cheap outer MAC, and silence under load | Transport | Standards Track | Replaced |
 
@@ -301,18 +301,25 @@ fixing it: the exchange excludes the device it *observed* from a ring's
 fan-out, not the one the signal's body names, because a client naming a
 sibling's key could otherwise silence that sibling's phone.
 
-SIP-35 is **half built and still Draft**, which is the honest state and worth
-being explicit about. Its origin half works: an admin authorises a replica in
-the log, a whitelisted peer can pull, and every peering refusal is the same
-refusal so the routes cannot be used as an existence oracle. A replica's
-verification and storage work too, including catching an origin that says two
-different things about one position. What is missing is the loop between them —
-`sqexd` has no runtime sQUIC client to pull with — and the record half entirely.
-The four routes are registered as unreachable in the route-coverage test rather
-than served and forgotten.
+SIP-35 is Active in sqex 0.32.0: a second exchange pulls a channel it did not
+originate, verifies every entry under the origin's *pinned* key, derives who may
+read it from the signed actions rather than from a roster anybody sent, and
+refuses every write, naming the origin. The blocker named here a version ago —
+that `sqexd` had no outbound sQUIC client, and taking `sqnr` for one would link
+libpcsclite into a server that never touches a YubiKey — was resolved by writing
+the eighty lines a replica actually needs.
 
-Building it corrected SIP-34, which is the sort of thing only a second consumer
-finds. That work derived receipts instead of storing them, on the grounds that
+Three things only building it made visible. An envelope has to be served with
+the epoch its `Put` was made at, because SIP-17 binds that epoch into the
+signature and a peer has no other way to know it. The origin has to *list* a
+channel's blobs, because attachments are named inside sealed bodies and a
+replica reading the whole log sees no identifiers at all — the same sealed-body
+problem SIP-36 hit from the other direction. And a replica must keep its own
+retention window rather than adopting the origin's, or it can never hold more
+than the origin does, which is half the reason to replicate.
+
+Building it also corrected SIP-34, which is the sort of thing only a second
+consumer finds. That work derived receipts instead of storing them, on the grounds that
 Ed25519 is deterministic and an exchange can always re-sign. An origin can. A
 replica cannot — it holds no origin seed — so a receipt it did not keep is one
 it can never produce again, and comparing two receipts for one position is
@@ -320,7 +327,9 @@ precisely what catching an equivocation is. Deriving made SIP-35's central
 property undetectable.
 
 **Draft, unimplemented:** SIP-25 through SIP-28. Those wire formats are not
-stable and should not be built against yet.
+stable and should not be built against yet. Every other SIP in the set is Active,
+Replaced or Rejected — which is a first, and worth saying because the gap between
+a written design and a built one is where this repository's own argument lives.
 
 ## What writing them first did and did not catch
 
