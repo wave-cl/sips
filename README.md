@@ -60,6 +60,7 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [36](sip-0036.md) | Call signalling | Application | Standards Track | Active |
 | [37](sip-0037.md) | A cheap outer MAC, and silence under load | Transport | Standards Track | Replaced |
 | [38](sip-0038.md) | Names for a domain | Naming | Standards Track | Draft |
+| [39](sip-0039.md) | Cross-exchange calls | Exchange | Standards Track | Draft |
 
 ## Where this is going
 
@@ -764,3 +765,19 @@ admission). The binding is exchange-asserted, not account-signed, and the
 document is plain that this trusts the operator for the namespace more than
 SIP-28 trusts it for an address — the concession SIP-33 already makes for the
 domain, and the one place a future account-signed claim would buy something.
+
+SIP-39 (Draft) is the one entry here written before its code. It is the
+federated form of SIP-12: `alice@squic.org` and `bob@indra.org` call each other
+while each stays connected only to their own exchange, and the two exchanges
+relay the call between themselves over an authenticated, allowlisted link. It
+reuses SIP-35's peering machinery wholesale — mutual SIP-9 authentication, an
+operator `relay_peers` allowlist, the rule that a key is never taken from the
+wire, the uniform refusal — and adds only live media over that link and the
+bridge bookkeeping. The caller's exchange does the cross-domain resolution
+(SIP-33, SIP-38) on the caller's behalf; the callee's exchange rings the callee
+across its devices (SIP-30, per device, as SIP-36 rings within a channel); and
+`Session::derive` is untouched, so neither exchange can read the call any more
+than a single SIP-12 relay can. It always relays rather than attempting a direct
+SIP-25 connection first, because that is the path that works behind any NAT —
+the same trade SIP-12 already makes within one exchange, made again across two.
+It stays Draft until it is built and a second implementation can check the wire.
