@@ -766,9 +766,10 @@ document is plain that this trusts the operator for the namespace more than
 SIP-28 trusts it for an address — the concession SIP-33 already makes for the
 domain, and the one place a future account-signed claim would buy something.
 
-SIP-39 (Draft) is the one entry here written before its code. It is the
-federated form of SIP-12: `alice@squic.org` and `bob@indra.org` call each other
-while each stays connected only to their own exchange, and the two exchanges
+SIP-39 is **Active** (sqex 0.41.0) and the one entry here written ahead of its
+code rather than alongside it. It is the federated form of SIP-12:
+`alice@squic.org` and `bob@indra.org` call each other while each stays connected
+only to their own exchange, and the two exchanges
 relay the call between themselves over an authenticated, allowlisted link. It
 reuses SIP-35's peering machinery wholesale — mutual SIP-9 authentication, an
 operator `relay_peers` allowlist, the rule that a key is never taken from the
