@@ -793,3 +793,19 @@ Active on a single implementation with both ends the same code; SIP-39 meets it
 and states the residual plainly, that a second, independent implementation of
 the relay wire would be a stronger check than a wire written and read from one
 source, and none exists yet.
+
+The first audit *after* that promotion is worth recording, because it found the
+kind of gap promotion is supposed to catch: **three of SIP-39's five refusal
+reasons were unreachable.** `declined` and `busy` appeared nowhere in the code —
+there was no way for a callee to refuse at all, so a call was either answered or
+waited out — and an account with nothing listening was rung optimistically rather
+than refused, so that ended in the caller's timeout too. The document was right
+and the code had quietly implemented the happy path, which is the same shape as
+SIP-17's narrowing and SIP-31's unread verdicts. Closing it added a decline
+message gated on the addressed account and answered uniformly, and a reachability
+check before the ring — and turned up a defect underneath: a pending call is
+indexed by `(caller, target)`, so the bridge carrying a refusal stayed there and
+answered every later call to that peer with the old one. **A single declined call
+made that peer permanently uncallable.** A rejection is now reported once and
+cleared. None of this was visible from reading; all of it came from asking what a
+callee who says no actually does.
