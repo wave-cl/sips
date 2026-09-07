@@ -59,8 +59,8 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [35](sip-0035.md) | Exchange-to-exchange replication | Exchange | Standards Track | Active |
 | [36](sip-0036.md) | Call signalling | Application | Standards Track | Active |
 | [37](sip-0037.md) | A cheap outer MAC, and silence under load | Transport | Standards Track | Replaced |
-| [38](sip-0038.md) | Names for a domain | Naming | Standards Track | Draft |
-| [39](sip-0039.md) | Cross-exchange calls | Exchange | Standards Track | Draft |
+| [38](sip-0038.md) | Names for a domain | Naming | Standards Track | Active |
+| [39](sip-0039.md) | Cross-exchange calls | Exchange | Standards Track | Active |
 
 ## Where this is going
 
@@ -754,7 +754,7 @@ two implementations and one deployment, and the deployment is the Rust one.
 The Go implementation is correct by inspection and by the cross-implementation
 matrix; it has never served production traffic on version 3.
 
-SIP-38 (Draft) is the human-memorable handle the stack has never had:
+SIP-38 is the human-memorable handle the stack has never had:
 `c@example.com`, where the domain finds the exchange (SIP-33) and the exchange
 resolves the name to an account. It is deliberately small — a name binds to an
 account, so its devices and endpoints are already SIP-22 and SIP-28, and
@@ -780,4 +780,15 @@ across its devices (SIP-30, per device, as SIP-36 rings within a channel); and
 than a single SIP-12 relay can. It always relays rather than attempting a direct
 SIP-25 connection first, because that is the path that works behind any NAT —
 the same trade SIP-12 already makes within one exchange, made again across two.
-It stays Draft until it is built and a second implementation can check the wire.
+
+SIP-38 and SIP-39 are **Active** together, in sqex 0.41.0, and had to be: SIP-39
+resolves `name@domain` through SIP-38, so an Active SIP-39 requires an Active
+SIP-38, the same way the chat set moved as one. Each has a shipped `sqex`
+reference implementation and is deployed — SIP-38 to `ex` with names claimed and
+verified, SIP-39 to both `ex` and `ex.indra.org` — and SIP-39 was proved by a
+live `alice@squic.org` ↔ `bob@indra.org` call carrying Opus both ways across the
+two exchanges. The bar for an exchange↔exchange wire is the one **SIP-35** set,
+Active on a single implementation with both ends the same code; SIP-39 meets it
+and states the residual plainly, that a second, independent implementation of
+the relay wire would be a stronger check than a wire written and read from one
+source, and none exists yet.
