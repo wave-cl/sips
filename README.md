@@ -59,6 +59,7 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [35](sip-0035.md) | Exchange-to-exchange replication | Exchange | Standards Track | Active |
 | [36](sip-0036.md) | Call signalling | Application | Standards Track | Active |
 | [37](sip-0037.md) | A cheap outer MAC, and silence under load | Transport | Standards Track | Replaced |
+| [38](sip-0038.md) | Names for a domain | Naming | Standards Track | Draft |
 
 ## Where this is going
 
@@ -751,3 +752,15 @@ One thing this promotion does not settle. SIP-37 is Active on the strength of
 two implementations and one deployment, and the deployment is the Rust one.
 The Go implementation is correct by inspection and by the cross-implementation
 matrix; it has never served production traffic on version 3.
+
+SIP-38 (Draft) is the human-memorable handle the stack has never had:
+`c@example.com`, where the domain finds the exchange (SIP-33) and the exchange
+resolves the name to an account. It is deliberately small — a name binds to an
+account, so its devices and endpoints are already SIP-22 and SIP-28, and
+multi-device support is inherited rather than rebuilt. Registration is open
+(anyone claims a free name, held on a SIP-4 liveness lease) or closed (an
+administrator assigns them with a SIP-10 transaction, the same authority as
+admission). The binding is exchange-asserted, not account-signed, and the
+document is plain that this trusts the operator for the namespace more than
+SIP-28 trusts it for an address — the concession SIP-33 already makes for the
+domain, and the one place a future account-signed claim would buy something.
