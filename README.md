@@ -809,3 +809,25 @@ answered every later call to that peer with the old one. **A single declined cal
 made that peer permanently uncallable.** A rejection is now reported once and
 cleared. None of this was visible from reading; all of it came from asking what a
 callee who says no actually does.
+
+That question generalised into a sweep, and the sweep found the same defect
+older and larger in **SIP-36**, which had been Active far longer. Three of *its*
+five ring states — `declined`, `busy`, `ended` — were never constructed either,
+and the cause was worse than an unfinished path: `sqex-chat`'s calling library
+was complete and **no command reached any of it**, so the only caller of
+`ring_state` in the whole workspace was a test. A person could not start a call,
+refuse one, or hang up, and the transcript drew no call entry at all — a call
+arrived, rang, and left no visible trace. This is `/channel/redact` again, the
+defect `route_coverage` exists to prevent, one level up: the *route* had a
+claimed caller, so the ring path looked covered while the methods behind it had
+none.
+
+The technique is duller than reading and worth stating on its own: **for each
+value in a closed set, ask what constructs it.** A variant that appears only
+where it is defined and where it is matched is a documented behaviour with
+nothing behind it, and no test written from the caller's side will ever notice,
+because every such test starts from something that already works. Closing SIP-36
+also drew the line the technique needs: `CALL_FAILED` remains unproduced *on
+purpose*, because it means the media failed and a chat client carries none — a
+variant with a stated reason to be absent is a different thing from one nobody
+noticed, and only the second is a defect.
