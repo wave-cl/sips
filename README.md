@@ -62,6 +62,7 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [38](sip-0038.md) | Names for a domain | Naming | Standards Track | Active |
 | [39](sip-0039.md) | Cross-exchange calls | Exchange | Standards Track | Active |
 | [40](sip-0040.md) | Signed exchange key handover | Transport | Standards Track | Active |
+| [41](sip-0041.md) | Verified contacts | Application | Standards Track | Draft |
 
 ## Where this is going
 
