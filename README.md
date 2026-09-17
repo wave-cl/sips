@@ -65,6 +65,7 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [41](sip-0041.md) | Verified contacts | Application | Standards Track | Draft |
 | [42](sip-0042.md) | History between your own devices | Application | Standards Track | Draft |
 | [43](sip-0043.md) | Multi-home channels | Exchange | Standards Track | Draft |
+| [44](sip-0044.md) | Account succession | Application | Standards Track | Draft |
 | [46](sip-0046.md) | Exchange peer directory | Exchange | Standards Track | Draft |
 
 ## Where this is going
