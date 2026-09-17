@@ -75,6 +75,7 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [52](sip-0052.md) | Catching up in one round trip | Exchange | Standards Track | Draft |
 | [53](sip-0053.md) | Channel origin succession | Exchange | Standards Track | Draft |
 | [54](sip-0054.md) | Read marks and signals across homes | Exchange | Standards Track | Draft |
+| [55](sip-0055.md) | Federated channel directory | Exchange | Standards Track | Draft |
 | [48](sip-0048.md) | Sealed backup at the exchange | Exchange | Standards Track | Draft |
 
 ## Where this is going
