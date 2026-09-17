@@ -68,6 +68,7 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [44](sip-0044.md) | Account succession | Application | Standards Track | Draft |
 | [45](sip-0045.md) | Wake-up for devices that cannot hold a stream | Exchange | Standards Track | Draft |
 | [46](sip-0046.md) | Exchange peer directory | Exchange | Standards Track | Draft |
+| [47](sip-0047.md) | A client that is asleep most of the time | Application | Standards Track | Draft |
 
 ## Where this is going
 
