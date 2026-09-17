@@ -81,6 +81,7 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [58](sip-0058.md) | Acting through a device for a hardware-held key | Exchange | Standards Track | Draft |
 | [59](sip-0059.md) | An account moves home | Exchange | Standards Track | Draft |
 | [60](sip-0060.md) | Reaching someone at another exchange | Exchange | Standards Track | Draft |
+| [61](sip-0061.md) | A copy as live as its origin | Exchange | Standards Track | Draft |
 | [48](sip-0048.md) | Sealed backup at the exchange | Exchange | Standards Track | Draft |
 
 ## Where this is going
