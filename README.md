@@ -78,6 +78,7 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [55](sip-0055.md) | Federated channel directory | Exchange | Standards Track | Draft |
 | [56](sip-0056.md) | Abuse controls for open exchanges | Exchange | Standards Track | Draft |
 | [57](sip-0057.md) | Forgetting across homes | Exchange | Standards Track | Draft |
+| [58](sip-0058.md) | Acting through a device for a hardware-held key | Exchange | Standards Track | Draft |
 | [48](sip-0048.md) | Sealed backup at the exchange | Exchange | Standards Track | Draft |
 
 ## Where this is going
