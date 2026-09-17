@@ -66,6 +66,7 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [42](sip-0042.md) | History between your own devices | Application | Standards Track | Draft |
 | [43](sip-0043.md) | Multi-home channels | Exchange | Standards Track | Draft |
 | [44](sip-0044.md) | Account succession | Application | Standards Track | Draft |
+| [45](sip-0045.md) | Wake-up for devices that cannot hold a stream | Exchange | Standards Track | Draft |
 | [46](sip-0046.md) | Exchange peer directory | Exchange | Standards Track | Draft |
 
 ## Where this is going
