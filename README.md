@@ -87,6 +87,7 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [64](sip-0064.md) | An exchange's earlier keys | Exchange | Standards Track | Draft |
 | [65](sip-0065.md) | Calls on a member's word | Exchange | Standards Track | Draft |
 | [66](sip-0066.md) | A home follows an origin's rotation | Exchange | Standards Track | Draft |
+| [67](sip-0067.md) | The account key among its devices | Exchange | Standards Track | Draft |
 | [48](sip-0048.md) | Sealed backup at the exchange | Exchange | Standards Track | Draft |
 
 ## Where this is going
