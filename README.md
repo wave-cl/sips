@@ -46,7 +46,7 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [22](sip-0022.md) | Device registry | Exchange | Standards Track | Active |
 | [23](sip-0023.md) | Device prekeys | Exchange | Standards Track | Active |
 | [24](sip-0024.md) | Admission requests | Exchange | Standards Track | Active |
-| [25](sip-0025.md) | Rendezvous and introduction | Exchange | Standards Track | Draft |
+| [25](sip-0025.md) | Rendezvous and introduction | Exchange | Standards Track | Active |
 | [26](sip-0026.md) | Capability advertisement | Exchange | Standards Track | Active |
 | [27](sip-0027.md) | Vouching and attestation | Exchange | Standards Track | Active |
 | [28](sip-0028.md) | Public key resolution | Exchange | Standards Track | Active |
@@ -89,7 +89,7 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [66](sip-0066.md) | A home follows an origin's rotation | Exchange | Standards Track | Draft |
 | [67](sip-0067.md) | The account key among its devices | Exchange | Standards Track | Draft |
 | [68](sip-0068.md) | Mail follows the account home | Exchange | Standards Track | Draft |
-| [69](sip-0069.md) | Introductions match address families | Exchange | Standards Track | Draft |
+| [69](sip-0069.md) | Introductions match address families | Exchange | Standards Track | Active |
 | [70](sip-0070.md) | Mail to an account, read by its devices | Exchange | Standards Track | Draft |
 | [48](sip-0048.md) | Sealed backup at the exchange | Exchange | Standards Track | Draft |
 
