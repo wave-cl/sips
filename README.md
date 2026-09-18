@@ -85,6 +85,7 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [62](sip-0062.md) | Account key handover | Exchange | Standards Track | Draft |
 | [63](sip-0063.md) | Peering on a member's word | Exchange | Standards Track | Draft |
 | [64](sip-0064.md) | An exchange's earlier keys | Exchange | Standards Track | Draft |
+| [65](sip-0065.md) | Calls on a member's word | Exchange | Standards Track | Draft |
 | [48](sip-0048.md) | Sealed backup at the exchange | Exchange | Standards Track | Draft |
 
 ## Where this is going
