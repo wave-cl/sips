@@ -35,6 +35,12 @@ done
 for linked in $(grep -o 'sip-[0-9]*\.md' README.md | sort -u); do
     [ -f "$linked" ] || note "README links $linked, which does not exist"
 done
+# The index reads in number order. A row appended at the bottom of the table
+# (SIP-48, once) is what a new SIP looks like when its row is written last
+# and never moved.
+order=$(sed -n 's/^| \[\([0-9]*\)\](.*/\1/p' README.md)
+[ "$order" = "$(printf '%s\n' "$order" | sort -n)" ] ||
+    note "README index is out of number order"
 
 echo "cross-references"
 for f in sip-[0-9]*.md README.md template.md; do
