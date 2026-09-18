@@ -90,6 +90,7 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [67](sip-0067.md) | The account key among its devices | Exchange | Standards Track | Draft |
 | [68](sip-0068.md) | Mail follows the account home | Exchange | Standards Track | Draft |
 | [69](sip-0069.md) | Introductions match address families | Exchange | Standards Track | Draft |
+| [70](sip-0070.md) | Mail to an account, read by its devices | Exchange | Standards Track | Draft |
 | [48](sip-0048.md) | Sealed backup at the exchange | Exchange | Standards Track | Draft |
 
 ## Where this is going
