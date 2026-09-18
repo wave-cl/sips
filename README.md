@@ -92,6 +92,7 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [68](sip-0068.md) | Mail follows the account home | Exchange | Standards Track | Draft |
 | [69](sip-0069.md) | Introductions match address families | Exchange | Standards Track | Active |
 | [70](sip-0070.md) | Mail to an account, read by its devices | Exchange | Standards Track | Draft |
+| [71](sip-0071.md) | A direct message opened twice | Exchange | Standards Track | Draft |
 
 ## Where this is going
 
