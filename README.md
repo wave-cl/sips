@@ -99,6 +99,7 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [75](sip-0075.md) | Files of a folded copy | Exchange | Standards Track | Draft |
 | [76](sip-0076.md) | A member tells its own home | Exchange | Standards Track | Draft |
 | [77](sip-0077.md) | A device's chain, as the exchange holds it | Exchange | Standards Track | Draft |
+| [78](sip-0078.md) | A refusal a peer can act on | Exchange | Standards Track | Draft |
 
 ## Where this is going
 
