@@ -95,6 +95,7 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [71](sip-0071.md) | A direct message opened twice | Exchange | Standards Track | Draft |
 | [72](sip-0072.md) | Earlier incarnations between devices | Application | Standards Track | Draft |
 | [73](sip-0073.md) | Rooms on a member's word | Exchange | Standards Track | Draft |
+| [74](sip-0074.md) | Stranded entries, posted again | Application | Standards Track | Draft |
 
 ## Where this is going
 
