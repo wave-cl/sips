@@ -97,6 +97,7 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [73](sip-0073.md) | Rooms on a member's word | Exchange | Standards Track | Draft |
 | [74](sip-0074.md) | Stranded entries, posted again | Application | Standards Track | Draft |
 | [75](sip-0075.md) | Files of a folded copy | Exchange | Standards Track | Draft |
+| [76](sip-0076.md) | A member tells its own home | Exchange | Standards Track | Draft |
 
 ## Where this is going
 
