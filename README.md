@@ -101,6 +101,7 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [77](sip-0077.md) | A device's chain, as the exchange holds it | Exchange | Standards Track | Draft |
 | [78](sip-0078.md) | A refusal a peer can act on | Exchange | Standards Track | Draft |
 | [79](sip-0079.md) | A backup follows the account home | Exchange | Standards Track | Draft |
+| [80](sip-0080.md) | An origin that cannot be found | Exchange | Standards Track | Draft |
 
 ## Where this is going
 
