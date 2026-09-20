@@ -94,13 +94,11 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [72](sip-0072.md) | Earlier incarnations between devices | Application | Standards Track | Draft |
 | [74](sip-0074.md) | Stranded entries, posted again | Application | Standards Track | Draft |
 | [75](sip-0075.md) | Files of a folded copy | Exchange | Standards Track | Draft |
-| [76](sip-0076.md) | A member tells its own home | Exchange | Standards Track | Draft |
 | [77](sip-0077.md) | A device's chain, as the exchange holds it | Exchange | Standards Track | Draft |
 | [78](sip-0078.md) | A refusal a peer can act on | Exchange | Standards Track | Draft |
 | [79](sip-0079.md) | A backup follows the account home | Exchange | Standards Track | Draft |
 | [80](sip-0080.md) | An origin that cannot be found | Exchange | Standards Track | Draft |
 | [81](sip-0081.md) | Devices of an account that moved | Exchange | Standards Track | Draft |
-| [82](sip-0082.md) | A Move by accident | Application | Standards Track | Draft |
 | [83](sip-0083.md) | A device list that says whose it is | Exchange | Standards Track | Draft |
 | [84](sip-0084.md) | Wakes follow the account home | Exchange | Standards Track | Draft |
 
