@@ -91,7 +91,6 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [70](sip-0070.md) | Mail to an account, read by its devices | Exchange | Standards Track | Draft |
 | [71](sip-0071.md) | A direct message opened twice | Exchange | Standards Track | Draft |
 | [72](sip-0072.md) | Earlier incarnations between devices | Application | Standards Track | Draft |
-| [74](sip-0074.md) | Stranded entries, posted again | Application | Standards Track | Draft |
 | [78](sip-0078.md) | An origin that does not answer | Exchange | Standards Track | Draft |
 | [81](sip-0081.md) | Devices of an account that moved | Exchange | Standards Track | Draft |
 
