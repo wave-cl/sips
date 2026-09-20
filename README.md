@@ -88,7 +88,6 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [64](sip-0064.md) | An exchange's earlier keys | Exchange | Standards Track | Draft |
 | [65](sip-0065.md) | Calls on a member's word | Exchange | Standards Track | Draft |
 | [66](sip-0066.md) | A home follows an origin's rotation | Exchange | Standards Track | Draft |
-| [67](sip-0067.md) | The account key among its devices | Exchange | Standards Track | Draft |
 | [68](sip-0068.md) | Mail follows the account home | Exchange | Standards Track | Draft |
 | [69](sip-0069.md) | Introductions match address families | Exchange | Standards Track | Active |
 | [70](sip-0070.md) | Mail to an account, read by its devices | Exchange | Standards Track | Draft |
