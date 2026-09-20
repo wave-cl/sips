@@ -79,6 +79,7 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [60](sip-0060.md) | Reaching someone at another exchange | Exchange | Standards Track | Draft |
 | [65](sip-0065.md) | Calls and rooms on a member's word | Exchange | Standards Track | Draft |
 | [69](sip-0069.md) | Introductions match address families | Exchange | Standards Track | Replaced by 25 |
+| [85](sip-0085.md) | A connection carried by the home | Exchange | Standards Track | Draft |
 
 ## Where this is going
 
