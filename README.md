@@ -83,7 +83,6 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [68](sip-0068.md) | What follows the account home | Exchange | Standards Track | Draft |
 | [69](sip-0069.md) | Introductions match address families | Exchange | Standards Track | Active |
 | [78](sip-0078.md) | An origin that does not answer | Exchange | Standards Track | Draft |
-| [81](sip-0081.md) | Devices of an account that moved | Exchange | Standards Track | Draft |
 
 ## Where this is going
 
