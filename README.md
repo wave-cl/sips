@@ -69,7 +69,6 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [45](sip-0045.md) | Wake-up for devices that cannot hold a stream | Exchange | Standards Track | Draft |
 | [47](sip-0047.md) | A client that is asleep most of the time | Application | Standards Track | Draft |
 | [48](sip-0048.md) | Sealed backup at the exchange | Exchange | Standards Track | Draft |
-| [49](sip-0049.md) | Group calls across exchanges | Exchange | Standards Track | Draft |
 | [50](sip-0050.md) | Presence across an account's devices | Exchange | Standards Track | Draft |
 | [51](sip-0051.md) | Waking a device for a sibling's session | Exchange | Standards Track | Draft |
 | [53](sip-0053.md) | Channel origin succession | Exchange | Standards Track | Draft |
