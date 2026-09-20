@@ -98,7 +98,6 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [79](sip-0079.md) | A backup follows the account home | Exchange | Standards Track | Draft |
 | [80](sip-0080.md) | An origin that cannot be found | Exchange | Standards Track | Draft |
 | [81](sip-0081.md) | Devices of an account that moved | Exchange | Standards Track | Draft |
-| [83](sip-0083.md) | A device list that says whose it is | Exchange | Standards Track | Draft |
 | [84](sip-0084.md) | Wakes follow the account home | Exchange | Standards Track | Draft |
 
 ## Where this is going
