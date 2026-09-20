@@ -103,6 +103,7 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [79](sip-0079.md) | A backup follows the account home | Exchange | Standards Track | Draft |
 | [80](sip-0080.md) | An origin that cannot be found | Exchange | Standards Track | Draft |
 | [81](sip-0081.md) | Devices of an account that moved | Exchange | Standards Track | Draft |
+| [82](sip-0082.md) | A Move by accident | Client | Standards Track | Draft |
 
 ## Where this is going
 
