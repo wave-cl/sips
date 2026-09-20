@@ -86,7 +86,6 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [65](sip-0065.md) | Calls and rooms on a member's word | Exchange | Standards Track | Draft |
 | [68](sip-0068.md) | What follows the account home | Exchange | Standards Track | Draft |
 | [69](sip-0069.md) | Introductions match address families | Exchange | Standards Track | Active |
-| [70](sip-0070.md) | Mail to an account, read by its devices | Exchange | Standards Track | Draft |
 | [71](sip-0071.md) | A direct message opened twice | Exchange | Standards Track | Draft |
 | [78](sip-0078.md) | An origin that does not answer | Exchange | Standards Track | Draft |
 | [81](sip-0081.md) | Devices of an account that moved | Exchange | Standards Track | Draft |
