@@ -80,7 +80,6 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [59](sip-0059.md) | An account moves home | Exchange | Standards Track | Draft |
 | [60](sip-0060.md) | Reaching someone at another exchange | Exchange | Standards Track | Draft |
 | [65](sip-0065.md) | Calls and rooms on a member's word | Exchange | Standards Track | Draft |
-| [68](sip-0068.md) | What follows the account home | Exchange | Standards Track | Draft |
 | [69](sip-0069.md) | Introductions match address families | Exchange | Standards Track | Active |
 | [78](sip-0078.md) | An origin that does not answer | Exchange | Standards Track | Draft |
 
