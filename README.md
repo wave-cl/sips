@@ -81,9 +81,7 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [58](sip-0058.md) | Acting through a device for a hardware-held key | Exchange | Standards Track | Draft |
 | [59](sip-0059.md) | An account moves home | Exchange | Standards Track | Draft |
 | [60](sip-0060.md) | Reaching someone at another exchange | Exchange | Standards Track | Draft |
-| [61](sip-0061.md) | A copy as live as its origin | Exchange | Standards Track | Draft |
 | [62](sip-0062.md) | Account key handover | Exchange | Standards Track | Draft |
-| [63](sip-0063.md) | Peering on a member's word | Exchange | Standards Track | Draft |
 | [64](sip-0064.md) | An exchange's earlier keys | Exchange | Standards Track | Draft |
 | [65](sip-0065.md) | Calls and rooms on a member's word | Exchange | Standards Track | Draft |
 | [68](sip-0068.md) | What follows the account home | Exchange | Standards Track | Draft |
