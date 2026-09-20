@@ -72,7 +72,6 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [49](sip-0049.md) | Group calls across exchanges | Exchange | Standards Track | Draft |
 | [50](sip-0050.md) | Presence across an account's devices | Exchange | Standards Track | Draft |
 | [51](sip-0051.md) | Waking a device for a sibling's session | Exchange | Standards Track | Draft |
-| [52](sip-0052.md) | Catching up in one round trip | Exchange | Standards Track | Draft |
 | [53](sip-0053.md) | Channel origin succession | Exchange | Standards Track | Draft |
 | [55](sip-0055.md) | Federated channel directory | Exchange | Standards Track | Draft |
 | [56](sip-0056.md) | Abuse controls for open exchanges | Exchange | Standards Track | Draft |
