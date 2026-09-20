@@ -75,7 +75,6 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [51](sip-0051.md) | Waking a device for a sibling's session | Exchange | Standards Track | Draft |
 | [52](sip-0052.md) | Catching up in one round trip | Exchange | Standards Track | Draft |
 | [53](sip-0053.md) | Channel origin succession | Exchange | Standards Track | Draft |
-| [54](sip-0054.md) | Read marks and signals across homes | Exchange | Standards Track | Draft |
 | [55](sip-0055.md) | Federated channel directory | Exchange | Standards Track | Draft |
 | [56](sip-0056.md) | Abuse controls for open exchanges | Exchange | Standards Track | Draft |
 | [57](sip-0057.md) | Forgetting across homes | Exchange | Standards Track | Draft |
@@ -93,7 +92,6 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [71](sip-0071.md) | A direct message opened twice | Exchange | Standards Track | Draft |
 | [72](sip-0072.md) | Earlier incarnations between devices | Application | Standards Track | Draft |
 | [74](sip-0074.md) | Stranded entries, posted again | Application | Standards Track | Draft |
-| [77](sip-0077.md) | A device's chain, as the exchange holds it | Exchange | Standards Track | Draft |
 | [78](sip-0078.md) | An origin that does not answer | Exchange | Standards Track | Draft |
 | [81](sip-0081.md) | Devices of an account that moved | Exchange | Standards Track | Draft |
 
