@@ -86,13 +86,12 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [62](sip-0062.md) | Account key handover | Exchange | Standards Track | Draft |
 | [63](sip-0063.md) | Peering on a member's word | Exchange | Standards Track | Draft |
 | [64](sip-0064.md) | An exchange's earlier keys | Exchange | Standards Track | Draft |
-| [65](sip-0065.md) | Calls on a member's word | Exchange | Standards Track | Draft |
+| [65](sip-0065.md) | Calls and rooms on a member's word | Exchange | Standards Track | Draft |
 | [68](sip-0068.md) | Mail follows the account home | Exchange | Standards Track | Draft |
 | [69](sip-0069.md) | Introductions match address families | Exchange | Standards Track | Active |
 | [70](sip-0070.md) | Mail to an account, read by its devices | Exchange | Standards Track | Draft |
 | [71](sip-0071.md) | A direct message opened twice | Exchange | Standards Track | Draft |
 | [72](sip-0072.md) | Earlier incarnations between devices | Application | Standards Track | Draft |
-| [73](sip-0073.md) | Rooms on a member's word | Exchange | Standards Track | Draft |
 | [74](sip-0074.md) | Stranded entries, posted again | Application | Standards Track | Draft |
 | [75](sip-0075.md) | Files of a folded copy | Exchange | Standards Track | Draft |
 | [76](sip-0076.md) | A member tells its own home | Exchange | Standards Track | Draft |
