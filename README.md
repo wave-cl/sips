@@ -35,7 +35,6 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [11](sip-0011.md) | Delegating a transport identity | Application | Informational | Active |
 | [12](sip-0012.md) | Relayed session | Exchange | Standards Track | Active |
 | [13](sip-0013.md) | Rooms | Exchange | Standards Track | Active |
-| [14](sip-0014.md) | Discontinuous voice framing | Application | Standards Track | Replaced by 15 |
 | [15](sip-0015.md) | Voice framing with comfort noise | Application | Standards Track | Active |
 | [16](sip-0016.md) | Channels | Exchange | Standards Track | Active |
 | [17](sip-0017.md) | Channel keys | Exchange | Standards Track | Active |
@@ -58,7 +57,6 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [34](sip-0034.md) | Exchange receipts | Exchange | Standards Track | Active |
 | [35](sip-0035.md) | Exchange-to-exchange replication | Exchange | Standards Track | Active |
 | [36](sip-0036.md) | Call signalling | Application | Standards Track | Active |
-| [37](sip-0037.md) | A cheap outer MAC, and silence under load | Transport | Standards Track | Replaced |
 | [38](sip-0038.md) | Names for a domain | Naming | Standards Track | Active |
 | [39](sip-0039.md) | Cross-exchange calls | Exchange | Standards Track | Active |
 | [40](sip-0040.md) | Signed exchange key handover | Transport | Standards Track | Active |
@@ -78,7 +76,6 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [59](sip-0059.md) | An account moves home | Exchange | Standards Track | Draft |
 | [60](sip-0060.md) | Reaching someone at another exchange | Exchange | Standards Track | Draft |
 | [65](sip-0065.md) | Calls and rooms on a member's word | Exchange | Standards Track | Draft |
-| [69](sip-0069.md) | Introductions match address families | Exchange | Standards Track | Replaced by 25 |
 | [85](sip-0085.md) | A connection carried by the home | Exchange | Standards Track | Draft |
 | [86](sip-0086.md) | Video framing | Application | Standards Track | Draft |
 
@@ -271,12 +268,13 @@ question deserving its own document rather than a paragraph in somebody else's.
 and SIP-3 (both shipped in squic, Rust and Go, with a cross-implementation test
 in CI), SIP-4 (beacon), SIP-5 (mailbox), SIP-12 (relayed session) and SIP-13 (rooms) —
 the exchange's four services, all built on SIP-3 — SIP-10 (sqnr + sqex), SIP-11
-(documenting a pattern those two compose), SIP-15 (voice framing, which replaced
-SIP-14), SIP-16 through SIP-24 — the chat set, built across the sqex 0.9
+(documenting a pattern those two compose), SIP-15 (voice framing),
+SIP-16 through SIP-24 — the chat set, built across the sqex 0.9
 and 0.10 lines — SIP-30 through SIP-33, which went Active together after the
-audit described at the end of this file — and SIP-37 (MAC0, squic-rust v0.20.0
-and squic-go v0.65.0), the one entry here since SIP-29 to have needed both
-implementations, because it is the only recent change that touches the wire.
+audit described at the end of this file — and SIP-6 (the Initial envelope and
+its gate, squic-rust v0.20.0 and squic-go v0.65.0), the one entry here since
+SIP-29 to have needed both implementations, because it is the only recent
+change that touches the wire.
 
 The chat set went Active together, and had to. They are nine documents
 describing one thing: a channel that cannot be read without SIP-17's keys, which
@@ -690,28 +688,27 @@ SIP-13's mesh is quadratic and the alternative is an exchange that can hear the
 call. That is a limit of the architecture, not a gap in the document, and it says
 so rather than leaving it to be discovered at the ninth person.
 
-## Envelope version 4, and what it did to SIP-37
+## Envelope version 4, and the gate
 
-SIP-37 is **Replaced by SIP-6**. It was promoted to Active on 31 August 2026
-after a ten-rule audit against both implementations; five days later a second
-audit found that the two constructions it and SIP-7 defined — MAC0 and MAC2 —
-were two states of one proof. A cookie is delivered encrypted under a key
-derived from the server's public key, so a valid MAC2 already demonstrated the
-knowledge MAC0 existed to prove; the two fields were never both load-bearing on
-the same packet, and version 3 spent 32 bytes on them.
+The gate is **SIP-6**, and it arrived by merging two tags that turned out to be
+one. MAC0 and MAC2 were promoted to Active on 31 August 2026 after a ten-rule
+audit against both implementations; five days later a second audit found the
+two constructions were two states of one proof. A cookie is delivered encrypted
+under a key derived from the server's public key, so a valid MAC2 already
+demonstrated the knowledge MAC0 existed to prove; the two fields were never
+both load-bearing on the same packet, and version 3 spent 32 bytes on them.
 
 Envelope version 4 merges them into one 16-byte **gate tag** with two possible
 keys, makes the Ed25519 identity field conditional on a header flag rather than
 32 zero bytes, and drops the nonce that SIP-6 already recorded as neither
 tracked nor a replay defence. The anonymous trailer goes from 125 bytes to 69.
 
-**The property SIP-37 established is unchanged**: a caller who does not hold the
-server's public key is turned away for one HMAC, in silence, whether or not the
-server is under load. SIP-37 is retained rather than deleted because its
-Motivation is still the clearest statement of why the gate exists, and because
-its three-outcome rule under load — accept on a cookie-keyed tag, challenge on a
-key-keyed one, silence otherwise — is the part an implementer is most likely to
-get subtly wrong. It is reproduced verbatim in SIP-6.
+**The property is unchanged**: a caller who does not hold the server's public
+key is turned away for one HMAC, in silence, whether or not the server is under
+load. The three-outcome rule under load — accept on a cookie-keyed tag,
+challenge on a key-keyed one, silence otherwise — is the part an implementer is
+most likely to get subtly wrong, and it is stated in SIP-6, along with the
+account of why there is a gate at all.
 
 Versions 1 to 3 are retired outright rather than deprecated. Versions 1 and 2
 carried no gate at all, so a server accepting them did a Diffie-Hellman for any
@@ -730,49 +727,6 @@ a server refuses to *start* on an accept set naming a version it cannot parse,
 or an empty one. The second matters more: without it such a server binds,
 reports itself healthy, and drops every Initial in silence. `ex.squic.org` ran
 `accepted_envelope_versions = [3]` right up to the cut.
-
-## What promoting SIP-37 checked
-
-> Retained as the record of that promotion. SIP-37 is now Replaced; the audit
-> below was accurate when it ran and describes envelope version 3.
-
-## What promoting SIP-37 checked
-
-Promoted the same way: by reading the document against both implementations
-rather than by editing a status line. SIP-37 touches the wire, so SIP-1's
-higher bar applies and it needs Rust *and* Go — which is the clause that exists
-because these two have drifted before.
-
-Ten normative rules. Both implementations satisfy all ten, and the two agree
-with each other rather than merely each with the text:
-
-- The trailer is 125 bytes in both, and squic-rust asserts it at compile time.
-- `K0 = SHA-256("squic-mac0-v1" || server_x25519_pub)`, byte-identical labels,
-  derived once at endpoint construction rather than per packet as the SHOULD
-  asks.
-- `K0` is not SIP-7's cookie key: the labels differ (`squic-mac0-v1` against
-  `squic-cookie-v1`), which is the only thing separating two constructions over
-  the same public key.
-- MAC0 covers `version || datagram || x25519 || ed25519 || ts || nonce`, with
-  the version prefixed and the X25519 field explicit, and is compared in
-  constant time on both sides — `constant_time_eq` in Rust,
-  `subtle.ConstantTimeCompare` in Go.
-- **The validation order holds, including the two adjacencies the SIP says
-  carry its weight.** MAC0 is checked before the cookie decision and before the
-  Diffie-Hellman in both: in `try_version` at lines 61 / 67 / 115, and in
-  `tryVersion` at 49 / 54 / 101.
-
-Nothing needed changing. That is a duller result than the SIP-30 to SIP-33
-audit, which found three defects, and it is worth saying why rather than
-claiming better discipline: SIP-37 was written alongside its implementation
-during a security audit, with a regression test per rule and a negative control
-run for each, instead of being written first and implemented later. The two
-sets are not evidence about the same process.
-
-One thing this promotion does not settle. SIP-37 is Active on the strength of
-two implementations and one deployment, and the deployment is the Rust one.
-The Go implementation is correct by inspection and by the cross-implementation
-matrix; it has never served production traffic on version 3.
 
 SIP-38 is the human-memorable handle the stack has never had:
 `c@example.com`, where the domain finds the exchange (SIP-33) and the exchange
