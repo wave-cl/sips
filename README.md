@@ -78,6 +78,7 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [65](sip-0065.md) | Calls and rooms on a member's word | Exchange | Standards Track | Draft |
 | [85](sip-0085.md) | A connection carried by the home | Exchange | Standards Track | Draft |
 | [86](sip-0086.md) | Video framing | Application | Standards Track | Draft |
+| [87](sip-0087.md) | A channel key every member contributes to | Exchange | Standards Track | Draft |
 
 ## Where this is going
 
