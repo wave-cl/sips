@@ -81,6 +81,7 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [87](sip-0087.md) | A channel key every member contributes to | Exchange | Standards Track | Draft |
 | [88](sip-0088.md) | Feeds | Exchange | Standards Track | Draft |
 | [89](sip-0089.md) | Quoting and re-posting | Application | Standards Track | Draft |
+| [90](sip-0090.md) | What a reaction, a count and a directory would cost a feed | Application | Standards Track | Draft |
 
 ## Where this is going
 
