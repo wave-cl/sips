@@ -79,6 +79,8 @@ Read [SIP-1](sip-0001.md) for how the process works, and use
 | [85](sip-0085.md) | A connection carried by the home | Exchange | Standards Track | Draft |
 | [86](sip-0086.md) | Video framing | Application | Standards Track | Draft |
 | [87](sip-0087.md) | A channel key every member contributes to | Exchange | Standards Track | Draft |
+| [88](sip-0088.md) | Feeds | Exchange | Standards Track | Draft |
+| [89](sip-0089.md) | Quoting and re-posting | Application | Standards Track | Draft |
 
 ## Where this is going
 
